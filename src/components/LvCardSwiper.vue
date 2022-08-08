@@ -39,13 +39,19 @@ export default defineComponent({
       img: require('@/assets/11.png')
     }
   },
+  props: {
+    info: {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      default: () => {}
+    }
+  },
   mounted () {
     this.getList()
   },
   methods: {
     async getList () {
       const list = await api.getMemberList({
-        id: '1,2,3,4'
+        id: this.info.ids
       })
       list.forEach((item) => {
         if (!item.avatar) {
@@ -54,7 +60,7 @@ export default defineComponent({
               ? require('@/assets/11.png')
               : require('@/assets/22.png')
         } else {
-          item.avatar = '/upload/' + item.avatar
+          item.avatar = item.avatarUrl
         }
       })
       this.dataList = list
@@ -92,6 +98,7 @@ export default defineComponent({
     .avat{
       display: block;
         position: relative;
+        height: 100%;
         img {
           width: 100%;
           height: 100%;

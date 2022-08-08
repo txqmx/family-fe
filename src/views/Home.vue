@@ -1,12 +1,9 @@
 <template>
   <div class="home">
-    <lv-banner-view :info="homeData.banner"></lv-banner-view>
-    <lv-swiper :info="homeData.swiper"></lv-swiper>
-    <lv-card-swiper></lv-card-swiper>
-    <lv-text-view></lv-text-view>
-    <lv-img-view></lv-img-view>
-    <lv-notice-view></lv-notice-view>
-    <lv-video-view></lv-video-view>
+    <template v-for="(item, index) in homeConfig" :key="index">
+      <component :is="item.type" :info="item.data"></component>
+    </template>
+
   </div>
 </template>
 
@@ -29,19 +26,47 @@ export default defineComponent({
       loginShow1: true,
       loginShow: false,
       password: '',
-      homeData: {
-        banner: {
-          title: '黄氏家族江夏堂族谱',
-          address: '湖南',
-          info: 'xxxxxxxxx',
-          img: 'img/book.jpeg'
+      homeConfig: [
+        {
+          type: 'LvBannerView',
+          data: {
+            title: '黄氏家族江夏堂族谱',
+            address: '湖南',
+            info: 'xxxxxxxxx',
+            img: 'img/book.jpeg'
+          }
         },
-        swiper: {
-          imgs: [
-            'img/1.jpeg', 'img/2.jpeg', 'img/4.jpeg'
-          ]
+        {
+          type: 'LvSwiper',
+          data: {
+            imgs: ['img/1.jpeg', 'img/2.jpeg', 'img/4.jpeg']
+          }
+        },
+        {
+          type: 'LvCardSwiper',
+          data: {
+            ids: '1,2,3,4'
+          }
+        },
+        {
+          type: 'LvTextView'
+        },
+        {
+          type: 'LvImgView',
+          data: {
+            imgs: [
+              'img/5.jpeg',
+              'img/6.jpeg'
+            ]
+          }
+        },
+        {
+          type: 'LvNoticeView'
+        },
+        {
+          type: 'LvVideoView'
         }
-      }
+      ]
     }
   },
 

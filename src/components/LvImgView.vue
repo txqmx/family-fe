@@ -1,9 +1,9 @@
 <template>
   <div class="lv-img-container" @click="imagePreview">
-    <img :src="images[0]">
+    <img :src="info.imgs[0]">
     <div class="img-icon">
       <van-icon name="photo" />
-      2
+      {{info.imgs.length}}
     </div>
   </div>
 </template>
@@ -13,18 +13,16 @@ import { defineComponent } from 'vue'
 import { ImagePreview } from 'vant'
 export default defineComponent({
   name: 'LvImgView',
-  data () {
-    return {
-      images: [
-        'img/5.jpeg',
-        'img/6.jpeg'
-      ]
+  props: {
+    info: {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      default: () => {}
     }
   },
   methods: {
     imagePreview () {
       ImagePreview({
-        images: this.images,
+        images: this.info.imgs,
         closeable: true
       })
     }

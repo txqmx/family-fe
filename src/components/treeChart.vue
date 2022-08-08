@@ -7,7 +7,7 @@
           <div class="node_person">
             <div class="person" @click="handleClick(treeData)">
               <div class="avat">
-                <img v-if="treeData.avatar" :src="'/upload/'+treeData.avatar" />
+                <img v-if="treeData.avatar" :src="treeData.avatarUrl" />
                 <img v-else :src="defaultImg[treeData.sex || 0]" />
                 <div class="msg">{{treeData.identity}}</div>
               </div>
@@ -27,7 +27,7 @@
                     @click="handleClick(treeData, 'mate')"
                   >
                     <div class="avat">
-                      <img v-if="mate.avatar" :src="'/upload/'+mate.avatar" />
+                      <img v-if="mate.avatar" :src="mate.avatarUrl" />
                       <img v-else :src="defaultImg[mate.sex || 0]" />
                       <div class="msg">{{mate.identity}}</div>
                     </div>

@@ -24,14 +24,6 @@
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'LvBannerView',
-  data () {
-    return {
-      // title: '黄氏族谱',
-      // address: '湖南',
-      // info: 'xxxxxxxxx',
-      // img: 'img/book.jpeg'
-    }
-  },
   props: {
     info: {
       // eslint-disable-next-line @typescript-eslint/no-empty-function

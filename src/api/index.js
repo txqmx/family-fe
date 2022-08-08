@@ -4,7 +4,8 @@ import axios from 'axios'
 import { resSuccess, resError } from './interceptors'
 
 // import userTree from './userTree.json'
-const baseUrl = 'http://huanglf.zongxintang.com'
+const baseUrl = ''
+// const baseUrl = 'http://huanglf.zongxintang.com'
 
 const request = axios.create({
   timeout: 1000 * 30 // 超时设置

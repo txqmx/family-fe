@@ -8,46 +8,6 @@
     <TreeChart v-if="treeData" :json="treeData" @click-node="handleClick"></TreeChart>
     <van-popup v-model:show="dialogVisible" position="bottom" closeable>
       <div class="tree_tab_content">
-        <!-- <van-tabs v-model="active" shrink>
-            <van-tab title="行传">
-              <div class="tree_tab_item">
-                <van-row>
-                  <van-col span="12">名字: {{item.name}}</van-col>
-                  <van-col span="12">常用名: </van-col>
-                </van-row>
-                <van-row>
-                  <van-col span="12">性别: 男</van-col>
-                  <van-col span="12">世数: 2世</van-col>
-                </van-row>
-                <van-row>
-                  <van-col span="12">别名: </van-col>
-                  <van-col span="12">排行: </van-col>
-                </van-row>
-                <van-row>
-                  <van-col span="12">配偶: 氏</van-col>
-                  <van-col span="12">父名: xxx</van-col>
-                </van-row>
-                <van-row>
-                  <van-col span="24">子女: xxx</van-col>
-
-                </van-row>
-                <van-row>
-                  <van-col span="24">现居地: 中国</van-col>
-                </van-row>
-              </div>
-              <div class="tree_tab_img">
-                <img src="@/assets/1.png">
-                <img src="@/assets/2.png">
-                <img src="@/assets/3.png">
-              </div>
-            </van-tab>
-             <van-tab title="帖子">
-              <van-empty description="暂无数据" />
-            </van-tab>
-            <van-tab title="文章">
-              <van-empty description="暂无数据" />
-            </van-tab> -->
-        <!-- </van-tabs> -->
         <div class="tree_tab_item">
           <van-row>
             <van-col span="12">名字: {{ currentItem.name }}</van-col>
@@ -71,8 +31,11 @@
         <div class="tree_tab_img">
           <!-- <img src="@/assets/1.png">
                 <img src="@/assets/2.png"> -->
-          <img v-if="currentItem.detail_img" :src="currentItem.detail_img" />
-          <img v-else src="@/assets/3.png" />
+          <!-- <img v-if="currentItem.detail_img" :src="currentItem.detail_img" />
+          <img v-else src="@/assets/3.png" /> -->
+          <div v-html="currentItem.detail">
+
+          </div>
         </div>
       </div>
     </van-popup>
