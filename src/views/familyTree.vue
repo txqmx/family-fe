@@ -5,7 +5,10 @@
     text="参天大树必有其根，怀山之水必有其源,参天大树必有其根，怀山之水必有其源"
   /> -->
   <div class="family_content tree-content">
-    <TreeChart v-if="treeData" :json="treeData" @click-node="handleClick"></TreeChart>
+    <div id="treeData">
+      <TreeChart  v-if="treeData" :json="treeData" @click-node="handleClick"></TreeChart>
+    </div>
+
     <van-popup v-model:show="dialogVisible" position="bottom" closeable>
       <div class="tree_tab_content">
         <div class="tree_tab_item">
@@ -39,6 +42,10 @@
         </div>
       </div>
     </van-popup>
+    <div class="family_btn">
+      <van-button type="primary" @click="enlarge">放大</van-button>
+      <van-button type="primary" @click="micrify">缩小</van-button>
+    </div>
   </div>
 </template>
 
@@ -54,9 +61,7 @@ export default defineComponent({
       currentItem: '',
       dialogVisible: false,
       active: 2,
-      displacement: {
-        scale: 1
-      }
+      scale: 1
 
     }
   },
@@ -101,6 +106,24 @@ export default defineComponent({
     },
     handleClose () {
       this.dialogVisible = false
+    },
+    // 放大
+    enlarge () {
+      const treeData = document.getElementById('treeData')
+      this.scale += 0.1
+      // treeData.style.transform = `scale(${this.scale})`
+      treeData.style.zoom = this.scale
+      // treeData.style.transformOrigin = '0px 0px 0px'
+      console.log(treeData)
+    },
+    // 缩小
+    micrify () {
+      const treeData = document.getElementById('treeData')
+      this.scale -= 0.1
+      // treeData.style.transform = `scale(${this.scale})`
+      treeData.style.zoom = this.scale
+      // treeData.style.transformOrigin = '0px 0px 0px'
+      console.log(treeData)
     }
   }
 })
@@ -135,5 +158,9 @@ export default defineComponent({
     margin: 5px 0;
     width: 100%;
   }
+}
+.family_btn{
+  position: fixed;
+  bottom: 0;
 }
 </style>

@@ -172,7 +172,7 @@ table {
 td {
   position: relative;
   vertical-align: top;
-  padding-bottom: @td_padding;
+  // padding-bottom: @td_padding;
   // border: 1px solid #ccc;
   // text-align: center;
 }
@@ -180,6 +180,7 @@ td {
 .node {
   position: relative;
   margin: 0 1em;
+  margin-bottom: 20px;
   display: inline-block;
   text-align: center;
 
