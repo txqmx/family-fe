@@ -1,9 +1,9 @@
 <template>
   <div class="lv-img-container" @click="imagePreview">
-    <img :src="info.imgs[0]">
+    <img :src="imgs[0]">
     <div class="img-icon">
       <van-icon name="photo" />
-      {{info.imgs.length}}
+      {{imgs.length}}
     </div>
   </div>
 </template>
@@ -19,10 +19,15 @@ export default defineComponent({
       default: () => {}
     }
   },
+  computed: {
+    imgs () {
+      return JSON.parse(this.info.imgs)
+    }
+  },
   methods: {
     imagePreview () {
       ImagePreview({
-        images: this.info.imgs,
+        images: this.imgs,
         closeable: true
       })
     }

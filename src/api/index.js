@@ -4,7 +4,7 @@ import axios from 'axios'
 import { resSuccess, resError } from './interceptors'
 
 // import userTree from './userTree.json'
-const baseUrl = ''
+const baseUrl = 'http://127.0.0.1:7001'
 // const baseUrl = 'http://huanglf.zongxintang.com'
 
 const request = axios.create({
@@ -23,5 +23,6 @@ const axiosCus = {
 export default {
   getMemberList: (data) => axiosCus.get(`${baseUrl}/api/member/queryList`, data),
   getMemberTree: (data) => axiosCus.get(`${baseUrl}/api/member/queryTree`, data),
-  getMemberDetail: (data) => axiosCus.get(`${baseUrl}/api/member/query`, data)
+  getMemberDetail: (data) => axiosCus.get(`${baseUrl}/api/member/query`, data),
+  getPageDetail: (data) => axiosCus.get(`${baseUrl}/api/page/query`, data)
 }

@@ -9,6 +9,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import api from '@/api'
 import LvSwiper from '@/components/LvSwiper.vue'
 import LvTextView from '@/components/LvTextView.vue'
 import { mapMutations } from 'vuex'
@@ -26,53 +27,21 @@ export default defineComponent({
       loginShow1: true,
       loginShow: false,
       password: '',
-      homeConfig: [
-        {
-          type: 'LvBannerView',
-          data: {
-            title: '黄氏家族江夏堂族谱',
-            address: '湖南',
-            info: 'xxxxxxxxx',
-            img: 'img/book.jpeg'
-          }
-        },
-        {
-          type: 'LvSwiper',
-          data: {
-            imgs: ['img/1.jpeg', 'img/2.jpeg', 'img/4.jpeg']
-          }
-        },
-        {
-          type: 'LvCardSwiper',
-          data: {
-            ids: '1,2,3,4'
-          }
-        },
-        {
-          type: 'LvTextView'
-        },
-        {
-          type: 'LvImgView',
-          data: {
-            imgs: [
-              'img/5.jpeg',
-              'img/6.jpeg'
-            ]
-          }
-        },
-        {
-          type: 'LvNoticeView'
-        },
-        {
-          type: 'LvVideoView'
-        }
-      ]
+      homeConfig: []
     }
+  },
+  created () {
+    this.getPageDetail()
   },
 
   methods: {
-    ...mapMutations(['setLoading'])
-
+    ...mapMutations(['setLoading']),
+    async getPageDetail () {
+      const data = await api.getPageDetail({
+        id: 1
+      })
+      this.homeConfig = JSON.parse(data.detail)
+    }
   }
 
 })

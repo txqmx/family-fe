@@ -2,7 +2,7 @@
 <template>
   <div class="lv-banner-container">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item v-for="(item, index) in info.imgs" :key="index">
+      <van-swipe-item v-for="(item, index) in imgs" :key="index">
         <img :src="item">
       </van-swipe-item>
     </van-swipe>
@@ -17,6 +17,11 @@ export default defineComponent({
     info: {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       default: () => {}
+    }
+  },
+  computed: {
+    imgs () {
+      return JSON.parse(this.info.imgs)
     }
   },
   methods: {

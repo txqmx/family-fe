@@ -46,7 +46,14 @@ export default defineComponent({
     }
   },
   mounted () {
-    this.getList()
+    if (this.info) {
+      this.getList()
+    }
+  },
+  watch: {
+    info () {
+      this.getList()
+    }
   },
   methods: {
     async getList () {
