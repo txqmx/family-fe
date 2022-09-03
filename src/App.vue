@@ -1,10 +1,11 @@
 <template>
   <van-nav-bar
+    v-show="routeName !== 'Login'"
     title="宗信堂"
     left-arrow
     @click-left="onClickLeft"
     />
-  <div class="loading_overlay" v-if="loading">
+  <div class="loading_overlay" v-if="state.loading">
     <van-loading type="spinner" />
   </div>
   <router-view/>
@@ -12,14 +13,21 @@
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
 import { useStore } from 'vuex'
+import { useRoute } from 'vue-router'
 export default defineComponent({
   setup () {
     const store = useStore()
+    const route = useRoute()
     const onClickLeft = () => {
       history.back()
     }
     return {
-      loading: computed(() => store.state.loading),
+      state: computed(() => {
+        return store.state
+      }),
+      routeName: computed(() => {
+        return route.name
+      }),
       onClickLeft
     }
   }

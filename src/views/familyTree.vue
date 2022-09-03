@@ -4,9 +4,9 @@
     left-icon="volume-o"
     text="参天大树必有其根，怀山之水必有其源,参天大树必有其根，怀山之水必有其源"
   /> -->
-  <div class="family_content tree-content">
+  <div id="treeContent" class="family_content tree-content">
     <div id="treeData">
-      <TreeChart  v-if="treeData" :json="treeData" @click-node="handleClick"></TreeChart>
+      <TreeChart id="treeChart" v-if="treeData" :json="treeData" @click-node="handleClick"></TreeChart>
     </div>
 
     <van-popup v-model:show="dialogVisible" position="bottom" closeable>
@@ -21,6 +21,10 @@
             <van-col span="12">排行: </van-col>
           </van-row>
           <van-row>
+            <van-col span="12">生年: {{ this.dateFormat(currentItem.birthDate) }}</van-col>
+            <van-col v-if="currentItem.dieDate" span="12">卒年: {{ this.dateFormat(currentItem.dieDate) }}</van-col>
+          </van-row>
+          <van-row v-if="currentItem.mate">
             <van-col span="12"> 配偶: {{ currentItem.mate }} </van-col>
             <!-- <van-col span="12">父名: </van-col> -->
           </van-row>
@@ -43,8 +47,8 @@
       </div>
     </van-popup>
     <div class="family_btn">
-      <van-button type="primary" @click="enlarge">放大</van-button>
-      <van-button type="primary" @click="micrify">缩小</van-button>
+      <van-button type="warning" icon="plus" @click="enlarge"></van-button>
+      <van-button type="warning" icon="minus" @click="micrify"></van-button>
     </div>
   </div>
 </template>
@@ -57,6 +61,7 @@ import api from '@/api'
 export default defineComponent({
   data () {
     return {
+      treeDom: '',
       treeData: '',
       currentItem: '',
       dialogVisible: false,
@@ -71,33 +76,31 @@ export default defineComponent({
   created () {
     this.getTreeData()
   },
-
+  mounted () {
+    this.treeDom = document.getElementById('treeData')
+  },
   methods: {
     ...mapMutations(['setLoading']),
-    getTreeData () {
+    async getTreeData () {
       this.setLoading(true)
-      setTimeout(async () => {
-        const root = await api.getMemberList({
-          genealogyId: 1,
-          parentId: -1
-        })
-        if (root.length) {
-          this.treeData = await api.getMemberTree({ id: root[0].id })
-          console.log(this.treeData)
-        }
-
-        this.setLoading(false)
-      }, 300)
+      const root = await api.getMemberList({
+        genealogyId: 1,
+        parentId: -1
+      })
+      if (root.length) {
+        this.treeData = await api.getMemberTree({ id: root[0].id })
+      }
+      this.setLoading(false)
     },
     async handleClick (item: any, type) {
       const itemDetail = await api.getMemberDetail({
-        id: item.id,
+        id: type ? item.mateInfo.id : item.id,
         child: true,
         mate: true
       })
       const currentItem = {
         ...itemDetail,
-        mate: itemDetail.mate ? itemDetail.mate.name : '',
+        mate: itemDetail.mateInfo ? itemDetail.mateInfo.name : '',
         children: itemDetail.children.map(item => item.name).join()
       }
       this.currentItem = currentItem
@@ -109,21 +112,39 @@ export default defineComponent({
     },
     // 放大
     enlarge () {
-      const treeData = document.getElementById('treeData')
-      this.scale += 0.1
-      // treeData.style.transform = `scale(${this.scale})`
-      treeData.style.zoom = this.scale
-      // treeData.style.transformOrigin = '0px 0px 0px'
-      console.log(treeData)
+      if (!this.treeDom) return
+      if (this.scale >= 1.7) {
+        this.scale = 1.8
+      } else {
+        this.scale += 0.2
+      }
+      this.treeDom.style.transform = `scale(${this.scale})`
+      // this.treeDom.style.zoom = this.scale
+      this.treeDom.style.transformOrigin = '0px 0px 0px'
+      // const treeContent = document.getElementById('treeContent')
+      // console.log(this.treeDom.scrollHeight, treeContent.scrollWidth, treeContent.scrollHeight)
     },
     // 缩小
     micrify () {
-      const treeData = document.getElementById('treeData')
-      this.scale -= 0.1
-      // treeData.style.transform = `scale(${this.scale})`
-      treeData.style.zoom = this.scale
-      // treeData.style.transformOrigin = '0px 0px 0px'
-      console.log(treeData)
+      if (!this.treeDom) return
+      if (this.scale < 0.5) {
+        this.scale = 0.4
+      } else {
+        this.scale -= 0.2
+      }
+      this.treeDom.style.transform = `scale(${this.scale})`
+      // treeData.style.zoom = this.scale
+      this.treeDom.style.transformOrigin = '0px 0px 0px'
+      // const treeContent = document.getElementById('treeContent')
+      // console.log(this.treeDom.scrollHeight, treeContent.scrollWidth, treeContent.scrollHeight)
+    },
+    dateFormat (date) {
+      if (!date) return '-'
+      const newDate = new Date(date)
+      var Y = newDate.getFullYear() + '-'
+      var M = (newDate.getMonth() + 1 < 10 ? '0' + (newDate.getMonth() + 1) : newDate.getMonth() + 1) + '-'
+      var D = (newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate()) + ' '
+      return Y + M + D
     }
   }
 })
@@ -160,7 +181,14 @@ export default defineComponent({
   }
 }
 .family_btn{
+  width: 97.5px;
+  height: 40px;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
   position: fixed;
-  bottom: 0;
+  right: 15px;
+  bottom: 15px;
 }
 </style>

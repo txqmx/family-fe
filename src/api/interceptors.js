@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 // import { Message } from 'element'
+import { Toast } from 'vant'
 export function resSuccess (response) {
   /**
      * code非0返回出错，统一提示处理
@@ -17,11 +18,7 @@ export function resError (error) {
   const { response } = error
   const msg = '连接服务器失败, 检查网络'
   if (response && response.data) {
-    // Message({
-    //   message: response.data.message || response.data.errMsg || msg,
-    //   type: 'error',
-    //   duration: 3 * 1000
-    // })
+    Toast(msg)
   }
   return Promise.resolve(error)
 }

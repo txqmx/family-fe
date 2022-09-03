@@ -3,7 +3,6 @@
     <template v-for="(item, index) in homeConfig" :key="index">
       <component :is="item.type" :info="item.data"></component>
     </template>
-
   </div>
 </template>
 

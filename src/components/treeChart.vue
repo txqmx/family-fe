@@ -82,7 +82,7 @@ export default defineComponent({
   },
   data () {
     return {
-      treeData: {},
+      // treeData: {},
       defaultImg: {
         0: require('@/assets/11.png'),
         1: require('@/assets/22.png')
@@ -91,9 +91,12 @@ export default defineComponent({
     }
   },
   created () {
-    this.treeData = this.extendKey(this.json)
+    // this.treeData = this.extendKey(this.json)
   },
   computed: {
+    treeData () {
+      return this.extendKey(this.json)
+    },
     // 孩子的数量
     childLength () {
       return Array.isArray(this.treeData.children)
