@@ -113,8 +113,8 @@ export default defineComponent({
     // 放大
     enlarge () {
       if (!this.treeDom) return
-      if (this.scale >= 1.7) {
-        this.scale = 1.8
+      if (this.scale >= 2.9) {
+        this.scale = 3
       } else {
         this.scale += 0.2
       }
