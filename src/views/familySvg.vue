@@ -7,43 +7,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { mapMutations } from 'vuex'
 import * as d3 from 'd3'
+import api from '@/api'
 export default defineComponent({
   data () {
     return {
       nodes: '',
       zoom: '',
-      data: {
-        name: 'root',
-        children: [
-          {
-            name: '二级节点1',
-            children: [
-              {
-                name: 'A',
-                value: '叶子节点'
-              },
-              {
-                name: 'B',
-                value: '叶子节点'
-              }
-            ]
-          },
-          {
-            name: '二级节点2',
-            children: [
-              {
-                name: 'C',
-                value: '叶子节点'
-              },
-              {
-                name: 'D',
-                value: '叶子节点'
-              }
-            ]
-          }
-        ]
-      },
+      treeData: null,
       container: null, // 容器svg>g
       duration: 750, // 动画持续时间
       scaleRange: [1 / 8, 8], // container缩放范围
@@ -52,9 +24,11 @@ export default defineComponent({
       boxHeight: 100
     }
   },
+  created () {
+    this.getTreeData()
+  },
   mounted () {
     this.createSvg()
-    this.update()
   },
   computed: {
     treeMap () {
@@ -69,6 +43,7 @@ export default defineComponent({
     }
   },
   methods: {
+    ...mapMutations(['setLoading']),
     // 创建画布
     createSvg () {
       const rootDom = document.getElementById('treeSvg')
@@ -114,7 +89,7 @@ export default defineComponent({
     // 开始绘图
     update () {
       // 数据处理
-      const hierarchyData = d3.hierarchy(this.data)
+      const hierarchyData = d3.hierarchy(this.treeData)
       const tree = this.treeMap(hierarchyData)
       const nodes = tree.descendants()// 返回后代节点数组，第一个节点为自身，然后依次为所有子节点的拓扑排序
       const links = tree.links()// 返回当前 node 的 links 数组, 其中每个 link 定义了 source父节点, target 子节点属性。
@@ -160,7 +135,15 @@ export default defineComponent({
           return `translate(${d.x}, ${d.y})` // 位移
         })
 
-      treeNodes
+      const g1 = treeNodes
+        .append('g')
+        .attr('class', 'node')
+        .attr('fill', 'none')
+        .attr('width', this.boxWidth)
+        .attr('height', this.boxHeight)
+        .attr('y', 0)
+        .attr('x', -(this.boxWidth / 2))
+      g1
         .append('rect')
         .attr('class', 'node')
         .attr('fill', '#f7f8fa')
@@ -169,13 +152,41 @@ export default defineComponent({
         .attr('y', 0)
         .attr('x', -(this.boxWidth / 2))
 
-      treeNodes
-        .append('image')
+      g1.append('image')
         .attr('xlink:href', 'img/border.de66acbe.png')
+        .attr('preserveAspectRatio', 'none')
         .attr('width', this.boxWidth)
         .attr('height', this.boxHeight)
         .attr('y', 0)
         .attr('x', -(this.boxWidth / 2))
+
+      g1.append('image')
+        .attr('xlink:href', (d) => {
+          return d.data.avatarUrl
+        })
+        .attr('preserveAspectRatio', 'none')
+        .attr('width', 56)
+        .attr('height', 72)
+        .attr('y', 10)
+        .attr('x', -(this.boxWidth / 2) + 7)
+
+      const g2 = treeNodes
+        .append('g')
+        .attr('class', 'node')
+        .attr('fill', 'none')
+        .attr('width', 56)
+        .attr('height', 16.6)
+        .attr('y', 65.5)
+        .attr('x', -(this.boxWidth / 2) + 7)
+
+      g2
+        .append('rect')
+        .attr('class', 'node')
+        .attr('fill', 'rgba(22,20,20,.2)')
+        .attr('width', 56)
+        .attr('height', 16.6)
+        .attr('y', 65.5)
+        .attr('x', -(this.boxWidth / 2) + 7)
 
       // 插入文字
       treeNodes
@@ -185,6 +196,18 @@ export default defineComponent({
         .text((d) => {
           return d.data.name
         })
+    },
+    async getTreeData () {
+      this.setLoading(true)
+      const root = await api.getMemberList({
+        genealogyId: 1,
+        parentId: -1
+      })
+      if (root.length) {
+        this.treeData = await api.getMemberTree({ id: root[0].id })
+      }
+      this.setLoading(false)
+      this.update()
     }
 
   }
