@@ -47,22 +47,23 @@ export default defineComponent({
       container: null, // 容器svg>g
       duration: 750, // 动画持续时间
       scaleRange: [1 / 8, 8], // container缩放范围
-      centralPoint: [0, 0], // 画布中心点坐标x,y
       nodeSize: [100, 200], // 节点间距(高/水平)
       boxWidth: 70,
       boxHeight: 100
-
     }
   },
   mounted () {
     this.createSvg()
-    this.getData()
+    this.update()
   },
   computed: {
-    treeMap () { // 树布局
-      return d3.tree()
+    treeMap () {
+      // 树布局
+      return d3
+        .tree()
         .nodeSize(this.nodeSize)
-        .separation((a, b) => { // 根据是否为同一父节点设置节点距离比例
+        .separation((a, b) => {
+          // 根据是否为同一父节点设置节点距离比例
           return a.parent === b.parent ? 1 : 2
         })
     }
@@ -70,15 +71,14 @@ export default defineComponent({
   methods: {
     // 创建画布
     createSvg () {
-      const margin = { top: 0, right: 0, bottom: 0, left: 0 }
       const rootDom = document.getElementById('treeSvg')
       const width = rootDom.clientWidth
       const height = rootDom.clientHeight
-      const centralY = width / 2 + margin.left
-      const centralX = height / 2 + margin.top
-      this.centralPoint = [centralX, centralY]// 中心点坐标
+
       // svg标签
-      const svg = d3.select('#treeRoot').append('svg')
+      const svg = d3
+        .select('#treeRoot')
+        .append('svg')
         .attr('class', 'tree-svg')
         .attr('width', width)
         .attr('height', height)
@@ -86,14 +86,21 @@ export default defineComponent({
         .attr('fill', '#555')
 
       // g标签
-      this.container = svg.append('g')
+      this.container = svg
+        .append('g')
         .attr('class', 'container')
-        .attr('transform', 'translate(100, 0) scale(1)')
-        // .attr('transform', 'translate(40,40)')
+        .attr('transform', `translate(${width / 2}, 140) scale(1)`)
 
       // 指定缩放范围
-      const zoom = d3.zoom().scaleExtent([1 / 8, 8]).on('zoom', this.zoomFn)
-      this.container.transition().duration(this.duration).call(zoom.transform, d3.zoomIdentity)
+      const zoom = d3
+        .zoom()
+        .scaleExtent(this.scaleRange)
+        .on('zoom', this.zoomFn)
+      const transform = d3.zoomIdentity.translate(width / 2, 140).scale(1)
+      svg
+        .transition()
+        .duration(this.duration)
+        .call(zoom.transform, transform)
       svg.call(zoom)
 
       // 数据处理
@@ -104,57 +111,82 @@ export default defineComponent({
       const zoom = e.transform
       return this.container.attr('transform', zoom)
     },
-    // 获取数据
-    getData () {
+    // 开始绘图
+    update () {
+      // 数据处理
       const hierarchyData = d3.hierarchy(this.data)
-      const treeLayout = this.treeMap
-
-      var nodesData = treeLayout(hierarchyData)
-      // var links = treeLayout.links()
-      const g = d3.select('.container')
-      const links = g.selectAll('.links')
-        .data(nodesData.links()) // nodesData.descendants()返回所有节点的数据，利于我们绑定数据，slcie(1)截取root后的全部节点，防止重绘
-        .enter().append('path') // 用path画线
+      const tree = this.treeMap(hierarchyData)
+      const nodes = tree.descendants()// 返回后代节点数组，第一个节点为自身，然后依次为所有子节点的拓扑排序
+      const links = tree.links()// 返回当前 node 的 links 数组, 其中每个 link 定义了 source父节点, target 子节点属性。
+      this.drawLine(links)
+      this.drawNode(nodes)
+    },
+    // 绘制线条
+    drawLine (links) {
+      const link = this.container.selectAll('.links').data(links)
+      link.enter()
+        .append('path') // 用path画线
         .attr('fill', 'none')
-        .attr('stroke', '#313131')
+        .attr('stroke', '#ffba3b')
         .attr('stroke-width', 2)
         .attr('class', 'link')
-        .attr('d', (d) => { // 通过三次贝塞尔曲线设置连线的弯曲程度。M：move to，即到控制点 C后设置两个控制点及终点
+        .attr('d', (d) => {
+          // 通过三次贝塞尔曲线设置连线的弯曲程度。M：move to，即到控制点 C后设置两个控制点及终点
           const sourceX = d.source.x
           const sourceY = d.source.y + this.boxWidth
           const targetX = d.target.x
           const targetY = d.target.y
 
-          return 'M' + sourceX + ',' + sourceY +
-                    'V' + ((targetY - sourceY) / 2 + sourceY) +
-                    'H' + targetX +
-                    'V' + targetY
+          return (
+            'M' +
+            sourceX +
+            ',' +
+            sourceY +
+            'V' +
+            ((targetY - sourceY) / 2 + sourceY) +
+            'H' +
+            targetX +
+            'V' +
+            targetY
+          )
         })
-      const nodes = g.selectAll('.node')
-        .data(nodesData.descendants()) // 同样是获得所有节点，便于数据绑定
-        .enter().append('g')
+    },
+    // 绘制节点
+    drawNode (nodes) {
+      const treeNodes = this.container.selectAll('.node').data(nodes)
+        .enter()
+        .append('g')
         .attr('transform', (d) => {
-          return `translate(${d.x}, ${d.y})`// 位移
+          return `translate(${d.x}, ${d.y})` // 位移
         })
-        // 画圆
-      nodes.append('rect')
+
+      treeNodes
+        .append('rect')
+        .attr('class', 'node')
+        .attr('fill', '#f7f8fa')
+        .attr('width', this.boxWidth)
+        .attr('height', this.boxHeight)
         .attr('y', 0)
-        .attr('x', (d) => {
-          return -(this.boxWidth / 2)
-        })
-        .attr('width', (d) => {
-          return this.boxWidth
-        })
-        .attr('height', (d) => {
-          return this.boxHeight
-        })
+        .attr('x', -(this.boxWidth / 2))
+
+      treeNodes
+        .append('image')
+        .attr('xlink:href', 'img/border.de66acbe.png')
+        .attr('width', this.boxWidth)
+        .attr('height', this.boxHeight)
+        .attr('y', 0)
+        .attr('x', -(this.boxWidth / 2))
+
       // 插入文字
-      nodes.append('text')
-        .attr('dx', '.9em')
+      treeNodes
+        .append('text')
+        .attr('dy', this.boxHeight + 20)
+        .attr('dx', -this.boxWidth / 4)
         .text((d) => {
           return d.data.name
         })
     }
+
   }
 })
 </script>
@@ -166,6 +198,9 @@ export default defineComponent({
   height: calc(100% - 51px);
   width: 100%;
   padding-top: 5px;
-  position: relative;
+  // position: relative;
+  .node{
+    fill:  url("~@/assets/border.png") no-repeat transparent;
+  }
 }
 </style>
