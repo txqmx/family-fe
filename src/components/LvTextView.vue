@@ -13,8 +13,10 @@
       <p v-if="expanded">汉代以后，黄氏因任官等原因分别向大江南北迁徙，南至广西、湖南、江西、四川等地，北至河南固始、南阳。江夏黄元方字彦丰又名黄允入居福建，黄积入居新安江、黄苾入居浙江金华，始于晋代。宋元之际，黄氏称盛于浙赣闽粤，至明末清初，开始移居到台湾，后又有不少人移至海外，黄姓在台湾人中更为常见，与郑姓共同享有"黄郑排满街"之美誉。黄姓为当今中国第7大姓。</p>
     </div>
     <div class="lv-text_more" @click="showMore">
-      <van-icon v-if="expanded" name="arrow-up" />
-      <van-icon v-else name="arrow-down" />
+      <!-- <van-icon v-if="expanded" name="arrow-up" /> -->
+      <!-- <van-icon v-else name="arrow-down" /> -->
+      <img src="../assets/moreup.png"  v-if="expanded" name="arrow-up" class="more-style"/>
+      <img src="../assets/moredown.png" v-else name="arrow-down" class="more-style" />
     </div>
   </div>
 </template>
@@ -63,6 +65,10 @@ export default defineComponent({
   }
   .van-divider{
     margin: 10px 0;
+  }
+  .more-style{
+    width:16px;
+    height:16px
   }
 }
 </style>
