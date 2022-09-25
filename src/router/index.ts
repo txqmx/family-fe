@@ -26,7 +26,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/familyTree',
     name: 'Tree',
-    component: familyTree
+    component: familySvg
   },
   {
     path: '/MemberDetail',

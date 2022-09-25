@@ -6,7 +6,7 @@ export class StockTree {
     // 宿主元素选择器
     this.el = options.el
     this.nodeClickEvent = options.nodeClickEvent || function (e, d) {
-      alert(d.name)
+
     }
     // 一些配置项
     this.config = {
@@ -97,7 +97,7 @@ export class StockTree {
     // 设置好节点之间距离的tree方法
     this.tree = d3.tree().nodeSize([this.config.dx, this.config.dy]).separation((a, b) => {
       if (a.data.mateInfo || b.data.mateInfo) {
-        return 2
+        return 1.8
       }
       return 1
     })
@@ -198,9 +198,6 @@ export class StockTree {
       })
       .attr('fill', (d) => {
         return '#f7f8fa'
-      })
-      .on('click', (e, d) => {
-        this.nodeClickEvent(e, d)
       })
 
     // 绘制人物块
@@ -356,6 +353,9 @@ export class StockTree {
     const p1 = this.gNodes.select(`#item${node.data.id}`).append('g')
       .attr('class', 'personItem')
       .attr('transform', `translate(${x}, 0)`)
+      .on('click', (e, d) => {
+        this.nodeClickEvent(e, d, isMeta)
+      })
 
     // 边框
     p1.append('image')
@@ -365,9 +365,7 @@ export class StockTree {
       .attr('height', this.config.rectHeight)
       .attr('x', -this.config.rectWidth / 2)
       .attr('y', -this.config.rectHeight / 2)
-      .on('click', (e, d) => {
-        this.nodeClickEvent(e, d)
-      })
+
     p1.append('image')
       .attr('xlink:href', (d) => {
         if (isMeta) {

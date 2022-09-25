@@ -150,7 +150,7 @@ export default defineComponent({
 })
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 .tree-content {
   // background: #ff98000a;
   overflow: auto;
