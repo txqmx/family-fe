@@ -37,12 +37,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/familySvg',
     name: 'familySvg',
     component: familySvg
-  },
-  {
-    path: '/liu',
-    name: 'liu',
-    component: liu
   }
+  // {
+  //   path: '/liu',
+  //   name: 'liu',
+  //   component: liu
+  // }
 ]
 
 const router = createRouter({
@@ -50,12 +50,12 @@ const router = createRouter({
   routes
 })
 
-// router.beforeEach((to, from, next) => {
-//   const token = window.sessionStorage.getItem('token')
-//   if (to.name !== 'Login' && !token) {
-//     next({ path: '/Login' })
-//   }
-//   next()
-// })
+router.beforeEach((to, from, next) => {
+  const token = window.sessionStorage.getItem('token')
+  if (to.name !== 'Login' && to.name !== 'familySvg' && !token) {
+    next({ path: '/Login' })
+  }
+  next()
+})
 
 export default router

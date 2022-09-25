@@ -13,7 +13,7 @@ export class StockTree {
       // 节点的横向距离
       dx: 100,
       // 节点的纵向距离
-      dy: 150,
+      dy: 170,
       // svg的viewBox的宽度
       width: 0,
       // svg的viewBox的高度
@@ -21,7 +21,11 @@ export class StockTree {
       // 节点的矩形框宽度
       rectWidth: 70,
       // 节点的矩形框高度
-      rectHeight: 100
+      rectHeight: 100,
+      // 人物头像大小
+      avatarWidth: 56,
+      avatarHeight: 72,
+      textHeight: 17
     }
     this.svg = null
     this.gAll = null
@@ -64,7 +68,7 @@ export class StockTree {
         return [
           -this.config.width / 2,
           // 如果有父节点，则根节点居中，否则根节点上浮一段距离
-          parentsLength > 0 ? -this.config.height / 2 : -this.config.height / 3,
+          -100,
           this.config.width,
           this.config.height
         ]
@@ -91,7 +95,12 @@ export class StockTree {
     // 节点集合
     this.gNodes = gAll.append('g').attr('id', 'nodeGroup')
     // 设置好节点之间距离的tree方法
-    this.tree = d3.tree().nodeSize([this.config.dx, this.config.dy])
+    this.tree = d3.tree().nodeSize([this.config.dx, this.config.dy]).separation((a, b) => {
+      if (a.data.mateInfo || b.data.mateInfo) {
+        return 2
+      }
+      return 1
+    })
 
     this.rootOfDown = d3.hierarchy(this.originTreeData, (d) => d.children)
     this.rootOfUp = d3.hierarchy(this.originTreeData, (d) => d.parents)
@@ -133,45 +142,55 @@ export class StockTree {
       this.rootOfUp.x0 = 0
       this.rootOfUp.y0 = 0
     }
-
     const nodesOfDown = this.rootOfDown.descendants().reverse()
     const linksOfDown = this.rootOfDown.links()
-    const nodesOfUp = this.rootOfUp.descendants().reverse()
-    const linksOfUp = this.rootOfUp.links()
 
     this.tree(this.rootOfDown)
     this.tree(this.rootOfUp)
 
-    const myTransition = this.svg.transition().duration(500)
+    const myTransition = this.svg.transition().duration(400)
 
-    /** *  绘制子公司树  ***/
     const node1 = this.gNodes
       .selectAll('g.nodeOfDownItemGroup')
       .data(nodesOfDown, (d) => {
         return d.data.id
       })
-
     const node1Enter = node1
       .enter()
       .append('g')
+      .attr('id', d => {
+        return `item${d.data.id}`
+      })
       .attr('class', 'nodeOfDownItemGroup')
       .attr('transform', (d) => {
         return `translate(${source.x0},${source.y0})`
       })
+      .attr('width', (d) => {
+        if (d.data.mateInfo) {
+          return this.config.rectWidth * 2
+        }
+        return this.config.rectWidth
+      })
       .attr('fill-opacity', 0)
       .attr('stroke-opacity', 0)
       .style('cursor', 'pointer')
-    // 外层的矩形框
 
+    // 背景块，与背景色重合
     node1Enter
       .append('rect')
       .attr('width', (d) => {
+        if (d.data.mateInfo) {
+          return this.config.rectWidth * 2
+        }
         return this.config.rectWidth
       })
       .attr('height', (d) => {
         return this.config.rectHeight
       })
       .attr('x', (d) => {
+        if (d.data.mateInfo) {
+          return -this.config.rectWidth
+        }
         return -this.config.rectWidth / 2
       })
       .attr('y', (d) => {
@@ -183,82 +202,30 @@ export class StockTree {
       .on('click', (e, d) => {
         this.nodeClickEvent(e, d)
       })
-    node1Enter.append('image')
-      .attr('xlink:href', 'img/border.de66acbe.png')
-      .attr('preserveAspectRatio', 'none')
-      .attr('width', (d) => {
-        return this.config.rectWidth
-      })
-      .attr('height', (d) => {
-        return this.config.rectHeight
-      })
-      .attr('x', (d) => {
-        return -this.config.rectWidth / 2
-      })
-      .attr('y', (d) => {
-        return -this.config.rectHeight / 2
-      })
-      .on('click', (e, d) => {
-        this.nodeClickEvent(e, d)
-      })
-    node1Enter.append('image')
-      .attr('xlink:href', (d) => {
-        return d.data.avatarUrl || require('@/assets/11.png')
-      })
-      .attr('preserveAspectRatio', 'none')
-      .attr('width', 56)
-      .attr('height', 72)
-      .attr('y', -this.config.rectHeight / 2 + 8)
-      .attr('x', -(this.config.rectWidth / 2) + 7)
 
-    node1Enter
-      .append('text')
+    // 绘制人物块
+    // this.drawPerson(node1Enter)
+    node1Enter.each(d => {
+      if (d.data.mateInfo) {
+        this.drawPerson(d, 35, 'meta')
+        this.drawPerson(d, -35)
+      } else {
+        this.drawPerson(d)
+      }
+    })
+    node1Enter.append('text')
       .attr('class', 'name-msg')
-      .attr('y', 40)
-      .attr('width', 56)
+      .attr('y', 64)
       .text((d) => {
-        return d.data.name
+        return `第${d.depth + 1}世`
       })
-      .attr('text-anchor', (d) => {
-        return 'middle'
-      })
-      .style('font-size', (d) => (d.depth === 0 ? 12 : 12))
-      .style('font-family', '黑体')
-    //   .style('font-weight', 'bold')
 
-    const g2 = node1Enter
-      .append('g')
-      .attr('class', 'node')
-      .attr('fill', 'none')
-      .attr('width', (d) => {
-        return this.config.rectWidth
-      })
-      .attr('height', 16.6)
-      .attr('y', 65.5)
-
-    g2
-      .append('rect')
-      .attr('class', 'node')
-      .attr('fill', 'rgba(22,20,20,.3)')
-      .attr('width', 56)
-      .attr('height', 16.6)
-      .attr('y', 14)
-      .attr('x', -56 / 2)
-
-    g2.append('text')
-      .attr('width', 56)
-      .attr('height', 16.6)
-      .attr('y', 24)
-      .attr('class', 'identity-msg')
-      .text((d) => {
-        return d.data.identity
-      })
     // 增加展开按钮
     const expandBtnG = node1Enter
       .append('g')
       .attr('class', 'expandBtn')
       .attr('transform', (d) => {
-        return `translate(${0},${this.config.rectHeight / 2})`
+        return `translate(${0},${this.config.rectHeight / 2 + 20})`
       })
       .style('display', (d) => {
         // 如果是根节点，不显示
@@ -282,19 +249,21 @@ export class StockTree {
 
     expandBtnG
       .append('circle')
-      .attr('r', 8)
+      .attr('r', 10)
       .attr('fill', '#ffba3b')
-      .attr('cy', 8)
+      .attr('cy', 10)
+      .attr('height', 10)
 
     expandBtnG
       .append('text')
       .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
       .attr('fill', '#ffffff')
-      .attr('y', 13)
-      .style('font-size', 16)
-      .style('font-family', '微软雅黑')
+      .attr('y', 11)
+      .style('font-size', 18)
+      // .style('font-family', '微软雅黑')
       .text((d) => {
-        return d.children ? '-' : '+'
+        return d.children ? '—' : '+'
       })
 
     const link1 = this.gLinks
@@ -364,13 +333,11 @@ export class StockTree {
         return this.drawLink(o)
       })
 
-    /** *  绘制股东树  ***/
-
     // node数据改变的时候更改一下加减号
     const expandButtonsSelection = d3.selectAll('g.expandBtn')
 
     expandButtonsSelection.select('text').transition().text((d) => {
-      return d.children ? '-' : '+'
+      return d.children ? '—' : '+'
     })
 
     this.rootOfDown.eachBefore((d) => {
@@ -383,11 +350,78 @@ export class StockTree {
     })
   }
 
+  // 绘制人物框
+  drawPerson (node, x = 0, isMeta) {
+    // 人物框
+    const p1 = this.gNodes.select(`#item${node.data.id}`).append('g')
+      .attr('class', 'personItem')
+      .attr('transform', `translate(${x}, 0)`)
+
+    // 边框
+    p1.append('image')
+      .attr('xlink:href', 'img/border.de66acbe.png')
+      .attr('preserveAspectRatio', 'none')
+      .attr('width', this.config.rectWidth)
+      .attr('height', this.config.rectHeight)
+      .attr('x', -this.config.rectWidth / 2)
+      .attr('y', -this.config.rectHeight / 2)
+      .on('click', (e, d) => {
+        this.nodeClickEvent(e, d)
+      })
+    p1.append('image')
+      .attr('xlink:href', (d) => {
+        if (isMeta) {
+          return d.data.mateInfo.avatarUrl || require('@/assets/11.png')
+        }
+        return d.data.avatarUrl || require('@/assets/11.png')
+      })
+      .attr('preserveAspectRatio', 'none')
+      .attr('width', this.config.avatarWidth)
+      .attr('height', this.config.avatarHeight)
+      .attr('y', -this.config.rectHeight / 2 + 8) // 距离边框8
+      .attr('x', -this.config.rectWidth / 2 + 7)
+
+    // 文字框
+    const testCon = p1
+      .append('g')
+      .attr('class', 'text-content')
+      .attr('fill', 'none')
+
+    testCon
+      .append('rect')
+      .attr('class', 'node')
+      .attr('fill', 'rgba(22,20,20,.3)')
+      .attr('width', this.config.avatarWidth)
+      .attr('height', this.config.textHeight)
+      .attr('y', this.config.avatarHeight - this.config.textHeight - this.config.rectHeight / 2 + 8)
+      .attr('x', -this.config.avatarWidth / 2)
+
+    testCon.append('text')
+      .attr('y', 26)
+      .attr('class', 'identity-msg')
+      .text((d) => {
+        if (isMeta) {
+          return d.data.mateInfo.identity
+        }
+        return d.data.identity
+      })
+
+    testCon.append('text')
+      .attr('class', 'name-msg')
+      .attr('y', 43)
+      .text((d) => {
+        if (isMeta) {
+          return d.data.mateInfo.name
+        }
+        return d.data.name
+      })
+  }
+
   // 直角连接线 by wushengyuan
   drawLink ({ source, target }) {
     const halfDistance = (target.y - source.y) / 2
-    const halfY = source.y + halfDistance
-    return `M${source.x},${source.y} L${source.x},${halfY} ${target.x},${halfY} ${target.x},${target.y}`
+    const halfY = source.y + halfDistance + 13
+    return `M${source.x},${source.y + 70} L${source.x},${halfY} ${target.x},${halfY} ${target.x},${target.y}`
   }
 
   // 展开所有的节点

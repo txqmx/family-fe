@@ -56,18 +56,19 @@ export default defineComponent({
   height: calc(100% - 51px);
   width: 100%;
   padding-top: 5px;
-  // position: relative;
   .identity-msg{
     stroke: #fff;
     font-size: 12px;
     text-anchor: middle;
-    dominant-baseline: middle;
+    stroke-width: 0.7;
+    fill: #ffffff;
   }
   .name-msg{
     stroke: #000000;
     font-size: 12px;
     text-anchor: middle;
-    dominant-baseline: middle;
+    stroke-width: 0.6;
+    fill: #000000;
   }
 }
 </style>
