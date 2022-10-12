@@ -4,11 +4,15 @@
     title="宗信堂"
     left-arrow
     @click-left="onClickLeft"
-    />
+  >
+    <template #right>
+      <van-icon v-show="routeName === 'familySvg'" name="search" size="18" @click="search"/>
+    </template>
+  </van-nav-bar>
   <div class="loading_overlay" v-if="state.loading">
     <van-loading type="spinner" />
   </div>
-  <router-view/>
+  <router-view />
 </template>
 <script lang="ts">
 import { defineComponent, computed } from 'vue'
@@ -19,7 +23,11 @@ export default defineComponent({
     const store = useStore()
     const route = useRoute()
     const onClickLeft = () => {
+      store.commit('setSearchState', false)
       history.back()
+    }
+    const search = () => {
+      store.commit('setSearchState', true)
     }
     return {
       state: computed(() => {
@@ -28,21 +36,24 @@ export default defineComponent({
       routeName: computed(() => {
         return route.name
       }),
+      search,
       onClickLeft
     }
   }
 })
 </script>
 <style lang="less">
-html, body, #app{
+html,
+body,
+#app {
   height: 100%;
   overflow: hidden;
 }
-#app{
+#app {
   position: relative;
   background: #f7f8fa;
 }
-.loading_overlay{
+.loading_overlay {
   position: fixed;
   top: 0;
   bottom: 0;

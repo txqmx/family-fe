@@ -32,7 +32,7 @@ export default defineComponent({
   },
   methods: {
     enterTree () {
-      this.$router.push({ name: 'Tree' })
+      this.$router.push({ name: 'familySvg' })
     }
   }
 })

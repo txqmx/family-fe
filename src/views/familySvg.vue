@@ -39,10 +39,12 @@
         </div>
       </div>
     </van-popup>
-    <!-- <div class="family_btn">
+    <div v-if="tree" class="family_btn">
       <van-button type="warning" size="small" @click="enlarge">全部展开</van-button>
       <van-button type="warning" size="small"  @click="micrify">全部收起</van-button>
-    </div> -->
+      <van-button v-if="!isRoot" type="warning" size="small"  @click="goBackRoot">回到根节点</van-button>
+    </div>
+    <search v-if="searchShow" @searchSubmit="searchSubmit"></search>
   </div>
 </template>
 
@@ -51,9 +53,11 @@ import { defineComponent } from 'vue'
 import { mapMutations } from 'vuex'
 import { StockTree } from './StockTree.js'
 import api from '@/api'
+import Search from './search.vue'
 export default defineComponent({
   data () {
     return {
+      treeData: {},
       tree: '',
       currentItem: '',
       dialogVisible: false
@@ -62,14 +66,30 @@ export default defineComponent({
   mounted () {
     this.getTreeData()
   },
+  computed: {
+    isRoot () {
+      return this.treeData.parentId === -1
+    },
+    searchShow () {
+      return this.$store.state.searchState
+    }
+  },
   methods: {
-    ...mapMutations(['setLoading']),
-
-    async getTreeData () {
+    ...mapMutations(['setLoading', 'setSearchState']),
+    searchSubmit (item) {
+      if (this.treeData.id !== item.id) {
+        this.getTreeData(item.parentId)
+      }
+      this.setSearchState(false)
+    },
+    goBackRoot () {
+      this.getTreeData()
+    },
+    async getTreeData (parentId) {
       this.setLoading(true)
       const root = await api.getMemberList({
         genealogyId: 1,
-        parentId: -1
+        parentId: parentId || -1
       })
       if (root.length) {
         this.treeData = await api.getMemberTree({ id: root[0].id })
@@ -84,8 +104,11 @@ export default defineComponent({
           this.handleClick(d.data, isMeta)
         }
       })
+      // this.tree.drawChart({
+      //   type: parentId ? 'all' : 'fold'
+      // })
     },
-    async handleClick (item: any, type) {
+    async handleClick (item, type) {
       const itemDetail = await api.getMemberDetail({
         id: type ? item.mateInfo.id : item.id,
         child: true,
@@ -103,7 +126,7 @@ export default defineComponent({
       this.dialogVisible = false
     },
     dateFormat (date) {
-      if (!date) return '-'
+      if (!date) { return '-' }
       const newDate = new Date(date)
       var Y = newDate.getFullYear() + '-'
       var M = (newDate.getMonth() + 1 < 10 ? '0' + (newDate.getMonth() + 1) : newDate.getMonth() + 1) + '-'
@@ -116,8 +139,8 @@ export default defineComponent({
     micrify () {
       this.tree.foldAllNodes()
     }
-
-  }
+  },
+  components: { Search }
 })
 </script>
 
