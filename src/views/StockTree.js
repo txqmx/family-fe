@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-empty-function */
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as d3 from 'd3'
 export class StockTree {
   constructor (options) {
@@ -64,7 +67,7 @@ export class StockTree {
     const svg = d3
       .create('svg')
       .attr('viewBox', () => {
-        const parentsLength = this.originTreeData.parents ? this.originTreeData.parents.length : 0
+        // const parentsLength = this.originTreeData.parents ? this.originTreeData.parents.length : 0
         return [
           -this.config.width / 2,
           // 如果有父节点，则根节点居中，否则根节点上浮一段距离
@@ -109,7 +112,12 @@ export class StockTree {
     [this.rootOfDown.descendants(), this.rootOfUp.descendants()].forEach((nodes) => {
       nodes.forEach((node) => {
         node._children = node.children || null
-        if (options.type === 'all') {
+        if (options.type === 'appoint') {
+          const nodeId = node.data.id
+          if (options.nodes.includes(nodeId)) {
+            node.children = node._children
+          }
+        } else if (options.type === 'all') {
           // 如果是all的话，则表示全部都展开
           node.children = node._children
         } else if (options.type === 'fold') { // 如果是fold则表示除了父节点全都折叠

@@ -105,7 +105,8 @@ export default defineComponent({
         }
       })
       // this.tree.drawChart({
-      //   type: parentId ? 'all' : 'fold'
+      //   type: parentId ? 'appoint' : 'fold',
+      //   nodes: [1, 2, 3]
       // })
     },
     async handleClick (item, type) {
