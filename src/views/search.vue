@@ -52,9 +52,6 @@ export default defineComponent({
       this.list = list
     },
     onSearch (e) {
-      Toast(e)
-      //   e.preventDefault()
-      console.log('---', e)
       this.getList()
     },
     handleClick (item) {
