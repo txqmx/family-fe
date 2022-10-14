@@ -55,9 +55,11 @@ export default defineComponent({
       this.getList()
     },
     handleClick (item) {
-      this.$emit('searchSubmit', item)
+      // this.$emit('searchSubmit', item)
+      this.$router.replace({ name: 'familySvg', params: item })
     },
     onCancel () {
+      history.back()
       this.setSearchState(false)
     }
   }

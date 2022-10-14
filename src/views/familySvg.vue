@@ -2,43 +2,6 @@
 <template>
   <div id="treeSvg">
     <div id="treeRoot"></div>
-    <van-popup v-model:show="dialogVisible" position="bottom" closeable>
-      <div class="tree_tab_content">
-        <div class="tree_tab_item">
-          <van-row>
-            <van-col span="12">名字: {{ currentItem.name }}</van-col>
-            <van-col span="12">性别: {{ currentItem.sex === 1 ? "女" : "男" }}</van-col>
-          </van-row>
-          <van-row>
-            <van-col span="12">世数: {{ currentItem.level }}世</van-col>
-            <van-col span="12">排行: </van-col>
-          </van-row>
-          <van-row>
-            <van-col span="12">生年: {{ this.dateFormat(currentItem.birthDate) }}</van-col>
-            <van-col v-if="currentItem.dieDate" span="12">卒年: {{ this.dateFormat(currentItem.dieDate) }}</van-col>
-          </van-row>
-          <van-row v-if="currentItem.mate">
-            <van-col span="12"> 配偶: {{ currentItem.mate }} </van-col>
-            <!-- <van-col span="12">父名: </van-col> -->
-          </van-row>
-          <van-row>
-            <van-col span="24"> 子女: {{ currentItem.children }} </van-col>
-          </van-row>
-          <van-row>
-            <van-col span="24">现居地: 中国</van-col>
-          </van-row>
-        </div>
-        <div class="tree_tab_img">
-          <!-- <img src="@/assets/1.png">
-                <img src="@/assets/2.png"> -->
-          <!-- <img v-if="currentItem.detail_img" :src="currentItem.detail_img" />
-          <img v-else src="@/assets/3.png" /> -->
-          <div v-html="currentItem.detail">
-
-          </div>
-        </div>
-      </div>
-    </van-popup>
     <div v-if="tree" class="family_btn">
       <van-button type="warning" size="small" @click="enlarge">全部展开</van-button>
       <van-button type="warning" size="small"  @click="micrify">全部收起</van-button>
@@ -60,11 +23,15 @@ export default defineComponent({
       treeData: {},
       tree: '',
       currentItem: '',
-      dialogVisible: false
+      params: ''
     }
   },
   mounted () {
-    this.getTreeData()
+    if (this.$route.params) {
+      this.searchSubmit(this.$route.params)
+    } else {
+      this.getTreeData()
+    }
   },
   computed: {
     isRoot () {
@@ -74,8 +41,15 @@ export default defineComponent({
       return this.$store.state.searchState
     }
   },
+  // beforeRouteEnter (to, from, next) {
+  //   next(vm => {
+  //     vm.params = to.params
+
+  //   // 通过 `vm` 访问组件实例
+  //   })
+  // },
   methods: {
-    ...mapMutations(['setLoading', 'setSearchState']),
+    ...mapMutations(['setLoading', 'setSearchState', 'setMemberDetailShow', 'setMemberDetail']),
     searchSubmit (item) {
       if (this.treeData.id !== item.id) {
         this.getTreeData(item.parentId)
@@ -120,20 +94,10 @@ export default defineComponent({
         mate: itemDetail.mateInfo ? itemDetail.mateInfo.name : '',
         children: itemDetail.children.map(item => item.name).join()
       }
-      this.currentItem = currentItem
-      this.dialogVisible = true
+      this.setMemberDetail(currentItem)
+      this.setMemberDetailShow(true)
     },
-    handleClose () {
-      this.dialogVisible = false
-    },
-    dateFormat (date) {
-      if (!date) { return '-' }
-      const newDate = new Date(date)
-      var Y = newDate.getFullYear() + '-'
-      var M = (newDate.getMonth() + 1 < 10 ? '0' + (newDate.getMonth() + 1) : newDate.getMonth() + 1) + '-'
-      var D = (newDate.getDate() < 10 ? '0' + newDate.getDate() : newDate.getDate()) + ' '
-      return Y + M + D
-    },
+
     enlarge () {
       this.tree.expandAllNodes()
     },
@@ -147,7 +111,6 @@ export default defineComponent({
 
 <style lang="less">
 #treeSvg {
-  // background: #ff98000a;
   overflow: hidden;
   height: calc(100% - 51px);
   width: 100%;

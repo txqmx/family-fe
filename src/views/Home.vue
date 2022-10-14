@@ -48,11 +48,13 @@ export default defineComponent({
 
 <style scoped lang="less">
 .home{
+  width: 100%;
   overflow: auto;
   height: calc(100% - 46px);
   padding-bottom: 20px;
   & > div{
     margin-bottom: 16px;
+    border-radius: 10px;
   }
 }
 

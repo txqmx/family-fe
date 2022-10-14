@@ -41,24 +41,25 @@ export default defineComponent({
 .lv-text-container {
   position: relative;
   background: #ffffff;
-  padding: 12px 16px;
+  padding: 12px 16px 16px;
   .lv-text_title {
     font-size: 16px;
     color: #323233;
-    line-height: 20px;
+    line-height: 24px;
   }
   .lv-text_content {
     padding: 0 4px;
     // margin-bottom: 10px;
     font-size: 14px;
     color: #969799;
-    line-height: 1.5;
+    // line-height: 1.5;
     overflow: hidden;
     .lv-list{
       .lv-item{
+        height: 38px;
         display: flex;
         justify-content: space-between;
-        line-height: 30px;
+        align-items: center;
         border-bottom: #ebedf0 1px solid;
       }
     }

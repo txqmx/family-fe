@@ -10,7 +10,7 @@
         class="mySwiper"
       >
         <swiper-slide v-for="(item, index) in dataList" :key="index">
-          <div class="avat" @click="enterDetail(item)">
+          <div class="avat" @click="handleClick(item)">
             <img :src="item.avatar" />
             <div class="msg">{{ item.name }}</div>
           </div>
@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { mapMutations } from 'vuex'
 import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue'
 import { Autoplay, Pagination, Navigation } from 'swiper'
 import api from '@/api'
@@ -56,6 +57,7 @@ export default defineComponent({
     }
   },
   methods: {
+    ...mapMutations(['setLoading', 'setSearchState', 'setMemberDetailShow', 'setMemberDetail']),
     async getList () {
       const list = await api.getMemberList({
         id: this.info.ids
@@ -72,8 +74,19 @@ export default defineComponent({
       })
       this.dataList = list
     },
-    enterDetail (item) {
-      // this.$router.push({ name: 'MemberDetail' })
+    async handleClick (item, type) {
+      const itemDetail = await api.getMemberDetail({
+        id: type ? item.mateInfo.id : item.id,
+        child: true,
+        mate: true
+      })
+      const currentItem = {
+        ...itemDetail,
+        mate: itemDetail.mateInfo ? itemDetail.mateInfo.name : '',
+        children: itemDetail.children.map(item => item.name).join()
+      }
+      this.setMemberDetail(currentItem)
+      this.setMemberDetailShow(true)
     }
   }
 
@@ -90,7 +103,7 @@ export default defineComponent({
   .lv-card-left {
     display: flex;
     align-items: center;
-    width: 26px;
+    width: 22px;
     background: #ff976a;
     color: #fff;
     font-size: 16px;

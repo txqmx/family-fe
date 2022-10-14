@@ -3,6 +3,7 @@ import App from './App.vue'
 // import './registerServiceWorker'
 import router from './router'
 import store from './store'
+import './assets/styles/main.less'
 import Vant from 'vant'
 import 'vant/lib/index.css'
 

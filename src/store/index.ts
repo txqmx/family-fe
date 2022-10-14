@@ -3,7 +3,10 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     loading: false,
-    searchState: false
+    searchState: false,
+    memberDetailShow: false,
+    memberDetail: '',
+    transitionName: 'slide-l'
   },
   mutations: {
     setLoading (state, val) {
@@ -11,6 +14,15 @@ export default createStore({
     },
     setSearchState (state, val) {
       state.searchState = val
+    },
+    setMemberDetailShow (state, val) {
+      state.memberDetailShow = val
+    },
+    setMemberDetail (state, val) {
+      state.memberDetail = val
+    },
+    setTransitionName (state, data) {
+      state.transitionName = data
     }
   },
   actions: {

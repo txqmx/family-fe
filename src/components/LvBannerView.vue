@@ -97,7 +97,7 @@ export default defineComponent({
     z-index: -10;
     background: url("~@/assets/background.png") no-repeat transparent;
     background-size: 100% 100%;
-    opacity: 0.5;
+    opacity: 0.7;
   }
 }
 </style>

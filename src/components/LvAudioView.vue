@@ -30,9 +30,10 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .lv-audio-container {
-  position: relative;
-  width: 35px;
-  height: 35px;
+  position: absolute;
+  right: 40px;
+  top: 32px;
+  transform: scale(0.6);
   #lv-audio{
     width: 100% !important;
     height: 100% !important;
