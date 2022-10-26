@@ -5,7 +5,7 @@ import { resSuccess, resError } from './interceptors'
 
 // import userTree from './userTree.json'
 // const baseUrl = 'http://192.168.0.101:7001'
-const baseUrl = 'http://huanglf.zongxintang.com'
+const baseUrl = ''
 
 const request = axios.create({
   timeout: 1000 * 30 // 超时设置
@@ -23,6 +23,7 @@ const axiosCus = {
 export default {
   login: (data) => axiosCus.post(`${baseUrl}/api/user/login`, data),
   getMemberList: (data) => axiosCus.get(`${baseUrl}/api/member/queryList`, data),
+  queryMaxLevel: (data) => axiosCus.get(`${baseUrl}/api/member/queryMaxLevel`, data),
   getMemberTree: (data) => axiosCus.get(`${baseUrl}/api/member/queryTree`, data),
   getMemberDetail: (data) => axiosCus.get(`${baseUrl}/api/member/query`, data),
   getPageDetail: (data) => axiosCus.get(`${baseUrl}/api/page/query`, data)

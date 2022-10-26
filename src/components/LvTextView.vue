@@ -64,7 +64,7 @@ export default defineComponent({
     text-align: center;
   }
   .van-divider{
-    margin: 10px 0;
+    margin: 10px 0 0 0;
   }
   .more-style{
     width:16px;

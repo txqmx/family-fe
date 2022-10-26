@@ -45,7 +45,7 @@ export default defineComponent({
     async getList () {
       this.loading = true
       const list = await api.getMemberList({
-        genealogyId: 1,
+        // genealogyId: 1,
         name: this.value
       })
       this.loading = false

@@ -3,11 +3,16 @@
   <div id="treeSvg">
     <div id="treeRoot"></div>
     <div v-if="tree" class="family_btn">
+      <van-button type="warning" size="small" @click="show=true">{{fieldValue}}</van-button>
       <van-button type="warning" size="small" @click="enlarge">全部展开</van-button>
-      <van-button type="warning" size="small"  @click="micrify">全部收起</van-button>
-      <van-button v-if="!isRoot" type="warning" size="small"  @click="goBackRoot">回到根节点</van-button>
+      <van-button type="warning" size="small" @click="micrify">全部收起</van-button>
+      <van-button v-if="!isRoot" type="warning" size="small" @click="goBackRoot">回到根节点</van-button>
     </div>
     <search v-if="searchShow" @searchSubmit="searchSubmit"></search>
+    <van-popup v-model:show="show" round position="bottom">
+      <van-cascader v-model="cascaderValue" title="请选择" :options="options" @close="show = false" @change="onChange"
+        @finish="onFinish" />
+    </van-popup>
   </div>
 </template>
 
@@ -23,11 +28,17 @@ export default defineComponent({
       treeData: {},
       tree: '',
       currentItem: '',
-      params: ''
+      params: '',
+      show: false,
+      cascaderValue: '',
+      fieldValue: '指定层级',
+      options: []
     }
   },
+
   mounted () {
-    if (this.$route.params) {
+    this.queryMaxLevel()
+    if (this.$route.params.id) {
       this.searchSubmit(this.$route.params)
     } else {
       this.getTreeData()
@@ -52,22 +63,57 @@ export default defineComponent({
     ...mapMutations(['setLoading', 'setSearchState', 'setMemberDetailShow', 'setMemberDetail']),
     searchSubmit (item) {
       if (this.treeData.id !== item.id) {
-        this.getTreeData(item.parentId)
+        this.getTreeData(item)
       }
       this.setSearchState(false)
     },
     goBackRoot () {
       this.getTreeData()
     },
-    async getTreeData (parentId) {
-      this.setLoading(true)
-      const root = await api.getMemberList({
-        genealogyId: 1,
-        parentId: parentId || -1
-      })
-      if (root.length) {
-        this.treeData = await api.getMemberTree({ id: root[0].id })
+    // 获取最大层级
+    async queryMaxLevel () {
+      const res = await api.queryMaxLevel()
+      if (res.length) {
+        const option = []
+        for (let i = 1; i <= res[0].level_max; i++) {
+          option.push({
+            text: `第${i}世`,
+            value: i,
+            children: []
+          })
+        }
+        this.options = option
       }
+    },
+    async getTreeData (row) {
+      this.setLoading(true)
+      if (row) {
+        this.treeData = await api.getMemberTree({ id: row.parentId === -1 ? row.id : row.parentId })
+        this.cascaderValue = [
+          { text: `第${row.level}世`, value: row.level, children: [] },
+          { text: row.name, value: row.id, parentId: row.parentId }
+        ]
+        if (this.cascaderValue.length === 2) {
+          this.fieldValue = this.cascaderValue.map((option) => option.text).join('/')
+        }
+      } else {
+        const root = await api.getMemberList({
+          // genealogyId: 1,
+          parentId: -1
+        })
+        if (root.length) {
+          const item = root[0]
+          this.treeData = await api.getMemberTree({ id: root[0].id })
+          this.cascaderValue = [
+            { text: `第${item.level}世`, value: item.level, children: [] },
+            { text: item.name, value: item.id, parentId: item.parentId }
+          ]
+          if (this.cascaderValue.length === 2) {
+            this.fieldValue = this.cascaderValue.map((option) => option.text).join('/')
+          }
+        }
+      }
+
       this.setLoading(false)
       this.tree = new StockTree({
         el: '#treeSvg',
@@ -103,7 +149,26 @@ export default defineComponent({
     },
     micrify () {
       this.tree.foldAllNodes()
+    },
+    async onChange (row) {
+      const list = await api.getMemberList({
+        // genealogyId: 1,
+        level: row.value
+      })
+      const optionItem = this.options.find(item => item.value === row.value)
+      optionItem.children = list.filter(item => !item.isMate).map(item => {
+        return {
+          text: item.name,
+          value: item.id,
+          ...item
+        }
+      })
+    },
+    onFinish ({ selectedOptions }) {
+      this.getTreeData(selectedOptions[1])
+      this.show = false
     }
+
   },
   components: { Search }
 })
@@ -115,14 +180,16 @@ export default defineComponent({
   height: calc(100% - 51px);
   width: 100%;
   padding-top: 5px;
-  .identity-msg{
+
+  .identity-msg {
     stroke: #fff;
     font-size: 12px;
     text-anchor: middle;
     stroke-width: 0.7;
     fill: #ffffff;
   }
-  .name-msg{
+
+  .name-msg {
     stroke: #000000;
     font-size: 12px;
     text-anchor: middle;
@@ -130,9 +197,11 @@ export default defineComponent({
     fill: #000000;
   }
 }
+
 .tree_tab_content {
   height: 60vh;
 }
+
 .tree_tab_item {
   font-size: 14px;
   padding: 10px;
@@ -151,7 +220,8 @@ export default defineComponent({
     width: 100%;
   }
 }
-.family_btn{
+
+.family_btn {
   // width: 97.5px;
   height: 40px;
   // border-radius: 20px;
@@ -161,7 +231,8 @@ export default defineComponent({
   position: fixed;
   right: 15px;
   bottom: 15px;
-  .van-button{
+
+  .van-button {
     margin: 0 5px;
   }
 }

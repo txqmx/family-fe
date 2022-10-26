@@ -222,7 +222,7 @@ export class StockTree {
       .attr('class', 'name-msg')
       .attr('y', 64)
       .text((d) => {
-        return `第${d.depth + 1}世`
+        return `第${d.data.level}世`
       })
 
     // 增加展开按钮
