@@ -25,7 +25,7 @@ export default defineComponent({
   name: 'LvNoticeView',
   data () {
     return {
-      list: ['黄氏家族族谱建立', '黄氏家族族谱建立'],
+      list: ['杜氏家族族谱建立', '杜氏家族族谱建立'],
       expanded: false
     }
   },

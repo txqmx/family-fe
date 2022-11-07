@@ -39,7 +39,15 @@ export default defineComponent({
       const data = await api.getPageDetail({
         id: 1
       })
-      this.homeConfig = JSON.parse(data.detail)
+      const homeConfig = data.detail
+      // 暂时兼容
+      for (let i = 0; i < homeConfig.length; i++) {
+        for (const j in homeConfig[i].data) {
+          homeConfig[i].data[j] = homeConfig[i].data[j].value
+        }
+      }
+      this.homeConfig = homeConfig
+      console.log(this.homeConfig)
     }
   }
 

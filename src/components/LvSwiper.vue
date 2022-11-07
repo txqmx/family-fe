@@ -21,7 +21,7 @@ export default defineComponent({
   },
   computed: {
     imgs () {
-      return JSON.parse(this.info.imgs)
+      return this.info.imgs
     }
   },
   methods: {

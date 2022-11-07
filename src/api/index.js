@@ -4,8 +4,8 @@ import axios from 'axios'
 import { resSuccess, resError } from './interceptors'
 
 // import userTree from './userTree.json'
-// const baseUrl = 'http://192.168.0.101:7001'
-const baseUrl = ''
+const baseUrl = 'http://test.zongxintang.com'
+// const baseUrl = 'http://127.0.0.1:7001'
 
 const request = axios.create({
   timeout: 1000 * 30 // 超时设置

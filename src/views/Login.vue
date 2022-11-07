@@ -33,7 +33,7 @@ export default defineComponent({
       homeActive: '0',
       loginShow1: true,
       loginShow: false,
-      username: '黄氏家族江夏堂族谱',
+      username: '杜氏家族族谱',
       password: ''
     }
   },
