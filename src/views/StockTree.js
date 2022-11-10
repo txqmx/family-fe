@@ -38,8 +38,6 @@ export class StockTree {
     this.tree = null
     // 投资公司树的根节点
     this.rootOfDown = null
-    // 股东树的根节点
-    this.rootOfUp = null
 
     this.drawChart({
       type: 'fold'
@@ -71,7 +69,7 @@ export class StockTree {
         return [
           -this.config.width / 2,
           // 如果有父节点，则根节点居中，否则根节点上浮一段距离
-          -100,
+          -55,
           this.config.width,
           this.config.height
         ]
@@ -81,15 +79,17 @@ export class StockTree {
 
     // 包括连接线和节点的总集合
     const gAll = svg.append('g').attr('id', 'all')
-    svg.call(
-      d3
-        .zoom()
-        .scaleExtent([0.2, 5])
-        .on('zoom', (e) => {
-          gAll.attr('transform', () => {
-            return `translate(${e.transform.x},${e.transform.y}) scale(${e.transform.k})`
-          })
+    const zoom = d3
+      .zoom()
+      .scaleExtent([0.2, 5])
+      .on('zoom', (e) => {
+        gAll.attr('transform', () => {
+          return `translate(${e.transform.x},${e.transform.y}) scale(${e.transform.k})`
         })
+      })
+    zoom.transform(svg, d3.zoomIdentity.translate(0, 0).scale(0.8))
+    svg.call(
+      zoom
     ).on('dblclick.zoom', null)// 取消默认的双击放大事件
 
     this.gAll = gAll
@@ -106,10 +106,9 @@ export class StockTree {
     })
 
     this.rootOfDown = d3.hierarchy(this.originTreeData, (d) => d.children)
-    this.rootOfUp = d3.hierarchy(this.originTreeData, (d) => d.parents)
     this.tree(this.rootOfDown);
 
-    [this.rootOfDown.descendants(), this.rootOfUp.descendants()].forEach((nodes) => {
+    [this.rootOfDown.descendants()].forEach((nodes) => {
       nodes.forEach((node) => {
         node._children = node.children || null
         if (options.type === 'appoint') {
@@ -122,7 +121,7 @@ export class StockTree {
           node.children = node._children
         } else if (options.type === 'fold') { // 如果是fold则表示除了父节点全都折叠
           // 将非根节点的节点都隐藏掉（其实对于这个组件来说加不加都一样）
-          if (node.depth) {
+          if (node.depth > 2) {
             node.children = null
           }
         }
@@ -147,14 +146,11 @@ export class StockTree {
       // 设置根节点所在的位置（原点）
       this.rootOfDown.x0 = 0
       this.rootOfDown.y0 = 0
-      this.rootOfUp.x0 = 0
-      this.rootOfUp.y0 = 0
     }
     const nodesOfDown = this.rootOfDown.descendants().reverse()
     const linksOfDown = this.rootOfDown.links()
 
     this.tree(this.rootOfDown)
-    this.tree(this.rootOfUp)
 
     const myTransition = this.svg.transition().duration(400)
 
@@ -346,10 +342,6 @@ export class StockTree {
     })
 
     this.rootOfDown.eachBefore((d) => {
-      d.x0 = d.x
-      d.y0 = d.y
-    })
-    this.rootOfUp.eachBefore((d) => {
       d.x0 = d.x
       d.y0 = d.y
     })
