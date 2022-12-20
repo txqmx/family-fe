@@ -201,7 +201,7 @@ export class StockTree {
         return -this.config.rectHeight / 2
       })
       .attr('fill', (d) => {
-        return '#f7f8fa'
+        return '#f2f2f2'
       })
 
     // 绘制人物块
@@ -221,51 +221,7 @@ export class StockTree {
         return `第${d.data.level}世`
       })
 
-    // 增加展开按钮
-    const expandBtnG = node1Enter
-      .append('g')
-      .attr('class', 'expandBtn')
-      .attr('transform', (d) => {
-        return `translate(${0},${this.config.rectHeight / 2 + 20})`
-      })
-      .style('display', (d) => {
-        // 如果是根节点，不显示
-        if (d.depth === 0) {
-          return 'none'
-        }
-        // 如果没有子节点，则不显示
-        if (!d._children) {
-          return 'none'
-        }
-      })
-      .on('click', (e, d) => {
-        if (d.children) {
-          d._children = d.children
-          d.children = null
-        } else {
-          d.children = d._children
-        }
-        this.update(d)
-      })
-
-    expandBtnG
-      .append('circle')
-      .attr('r', 10)
-      .attr('fill', '#ffba3b')
-      .attr('cy', 10)
-      .attr('height', 10)
-
-    expandBtnG
-      .append('text')
-      .attr('text-anchor', 'middle')
-      .attr('dominant-baseline', 'middle')
-      .attr('fill', '#ffffff')
-      .attr('y', 11)
-      .style('font-size', 18)
-      // .style('font-family', '微软雅黑')
-      .text((d) => {
-        return d.children ? '—' : '+'
-      })
+    this.drawBtn(node1Enter)
 
     const link1 = this.gLinks
       .selectAll('path.linkOfDownItem')
@@ -345,6 +301,51 @@ export class StockTree {
       d.x0 = d.x
       d.y0 = d.y
     })
+  }
+
+  // 绘制按钮
+  drawBtn (node) {
+    // 增加展开按钮
+    const expandBtnG = node
+      .append('g')
+      .attr('class', 'expandBtn')
+      .attr('transform', (d) => {
+        return `translate(${0},${this.config.rectHeight / 2 + 20})`
+      })
+      .style('display', (d) => {
+        // 如果没有子节点，则不显示
+        if (!d._children) {
+          return 'none'
+        }
+      })
+      .on('click', (e, d) => {
+        if (d.children) {
+          d._children = d.children
+          d.children = null
+        } else {
+          d.children = d._children
+        }
+        this.update(d)
+      })
+
+    expandBtnG
+      .append('circle')
+      .attr('r', 10)
+      .attr('fill', '#ffba3b')
+      .attr('cy', 10)
+      .attr('height', 10)
+
+    expandBtnG
+      .append('text')
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'middle')
+      .attr('fill', '#ffffff')
+      .attr('y', 11)
+      .style('font-size', 18)
+      // .style('font-family', '微软雅黑')
+      .text((d) => {
+        return d.children ? '—' : '+'
+      })
   }
 
   // 绘制人物框

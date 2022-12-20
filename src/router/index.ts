@@ -1,10 +1,14 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
-import Home1 from '../views/Home1.vue'
-import familyTree from '../views/familyTree.vue'
 import Login from '../views/Login.vue'
 import familySvg from '../views/familySvg.vue'
 import search from '../views/search.vue'
+import articlesList from '../views/articlesList.vue'
+import articlesDetail from '../views/articlesDetail.vue'
+import imgList from '../views/imgList.vue'
+import imgDetail from '../views/imgDetail.vue'
+// import articlesList from '../views/articlesList.vue'
+// import articlesDetail from '../views/articlesDetail.vue'
 import store from '../store/index'
 
 const routes: Array<RouteRecordRaw> = [
@@ -25,16 +29,6 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
-    path: '/home1',
-    name: 'Home1',
-    component: Home1
-  },
-  {
-    path: '/familyTree',
-    name: 'Tree',
-    component: familyTree
-  },
-  {
     path: '/familySvg',
     name: 'familySvg',
     meta: {
@@ -49,6 +43,30 @@ const routes: Array<RouteRecordRaw> = [
       index: 3
     },
     component: search
+  },
+  {
+    path: '/articlesList',
+    name: 'articlesList',
+
+    component: articlesList
+  },
+  {
+    path: '/articlesDetail',
+    name: 'articlesDetail',
+
+    component: articlesDetail
+  },
+  {
+    path: '/imgList',
+    name: 'imgList',
+
+    component: imgList
+  },
+  {
+    path: '/imgDetail',
+    name: 'imgDetail',
+
+    component: imgDetail
   }
 
 ]

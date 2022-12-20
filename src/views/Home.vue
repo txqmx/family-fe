@@ -9,14 +9,14 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import api from '@/api'
-import LvSwiper from '@/components/LvSwiper.vue'
-import LvTextView from '@/components/LvTextView.vue'
+import LvSwiper from '@/components/packages/LvSwiper.vue'
+import LvTextView from '@/components/packages/LvTextView.vue'
 import { mapMutations } from 'vuex'
-import LvCardSwiper from '../components/LvCardSwiper.vue'
-import LvImgView from '../components/LvImgView.vue'
-import LvVideoView from '../components/LvVideoView.vue'
-import LvBannerView from '../components/LvBannerView.vue'
-import LvNoticeView from '@/components/LvNoticeView.vue'
+import LvCardSwiper from '@/components/packages/LvCardSwiper.vue'
+import LvImgView from '@/components/packages/LvImgView.vue'
+import LvVideoView from '@/components/packages/LvVideoView.vue'
+import LvBannerView from '@/components/packages/LvBannerView.vue'
+import LvNoticeView from '@/components/packages/LvNoticeView.vue'
 export default defineComponent({
   components: { LvSwiper, LvTextView, LvCardSwiper, LvImgView, LvVideoView, LvBannerView, LvNoticeView },
   name: 'Home',

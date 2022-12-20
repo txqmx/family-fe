@@ -1,14 +1,24 @@
 <template>
-  <div class="lv-video-container">
+  <lv-card-container :title="title" @entryMore="entryMore">
+    <div class="lv-video-container">
     <div id="lv-video"></div>
   </div>
+  </lv-card-container>
+
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import Player from 'xgplayer'
+import LvCardContainer from '@/components/layout/LvCardContainer.vue'
 export default defineComponent({
+  components: { LvCardContainer },
   name: 'LvVideoView',
+  data () {
+    return {
+      title: '视频影像'
+    }
+  },
   mounted () {
     const player = new Player({
       id: 'lv-video',
@@ -19,6 +29,9 @@ export default defineComponent({
   methods: {
     enterTree () {
       this.$router.push({ name: 'Tree' })
+    },
+    entryMore () {
+      console.log(11)
     }
   }
 })

@@ -19,7 +19,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { mapMutations } from 'vuex'
-import { StockTree } from './StockTree.js'
+import { StockTree } from '@/utils/StockTree.js'
 import api from '@/api'
 import Search from './search.vue'
 export default defineComponent({

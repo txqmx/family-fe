@@ -1,6 +1,7 @@
 <template>
   <van-nav-bar
     v-show="routeName !== 'Login'"
+    class="vav-bar"
     title="宗信堂"
     left-arrow
     @click-left="onClickLeft"
@@ -53,6 +54,9 @@ export default defineComponent({
 })
 </script>
 <style lang="less">
+.vav-bar{
+  border-bottom: #f2f2f2 1px solid;
+}
 //定义过度动画
 .slide-l-enter-active,
 .slide-l-leave-active,
