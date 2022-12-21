@@ -28,6 +28,7 @@ export default {
   getMemberDetail: (data) => axiosCus.get(`${baseUrl}/api/member/query`, data),
   getPageDetail: (data) => axiosCus.get(`${baseUrl}/api/page/query`, data),
   getArticlesList: (data) => axiosCus.get(`${baseUrl}/api/articles/queryList`, data),
-  getImgList: (data) => axiosCus.get(`${baseUrl}/api/resourceType/queryList?dataType=img`, data),
+  getPhptpList: (data) => axiosCus.get(`${baseUrl}/api/resourceType/queryList?dataType=img`, data),
+  getImgList: (data) => axiosCus.get(`${baseUrl}/api/articles/queryList`, data),
   getArticlesDetail: (data) => axiosCus.get(`${baseUrl}/api/articles/query`, data)
 }

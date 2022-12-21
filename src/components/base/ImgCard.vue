@@ -1,61 +1,75 @@
 <template>
   <div class="img-card-container" :style="{ 'border-radius': radius }" @click="imagePreview">
     <div class="img-contont">
-      <img :src="imgCover" />
+      <img :src="imgInfo.cover" />
       <div class="img-icon">
         <van-icon name="photo" />
-        {{ imgLength }}
+        {{ imgInfo.length }}
       </div>
     </div>
     <div v-if="type === 'card'" class="img-title">
-      <span>{{imgName}}</span>
+      <span>{{imgInfo.name}}</span>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { ImagePreview } from 'vant'
+import { mapMutations } from 'vuex'
 export default defineComponent({
   data () {
     return {
-      radius: ''
+      radius: '',
+      imgInfo: {
+        cover: '',
+        name: '',
+        length: ''
+      }
     }
   },
   props: {
     type: {
-      default: 'view'
+      default: 'view' // view, card
     },
-    imgs: {
-      default: () => []
+    imgs: { // 图片列表
+      default: ''
     },
-    imgItem: {
+    imgItem: { // 图集卡片
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       default: ''
-    }
-  },
-  computed: {
-    imgCover () {
-      return this.imgItem ? this.imgItem.cover : this.imgs[0]
-    },
-    imgName () {
-      return this.imgItem ? this.imgItem.name : ''
-    },
-    imgLength () {
-      return this.imgItem ? this.imgItem.length : this.imgs.length
     }
   },
   mounted () {
     if (this.type === 'card') {
       this.radius = '8px'
     }
+    if (this.imgs && Array.isArray(this.imgs)) {
+      this.imgInfo = {
+        cover: this.imgs[0],
+        name: '',
+        length: this.imgs.length
+      }
+    } else {
+      this.imgInfo = this.imgItem
+    }
   },
   methods: {
+    ...mapMutations(['openPreview']),
     imagePreview () {
-      ImagePreview({
-        images: this.imgs,
-        closeable: true
-      })
+      if (this.imgs && Array.isArray(this.imgs)) {
+        const list = []
+        this.imgs.forEach(item => {
+          list.push({
+            content: item,
+            name: '',
+            info: '',
+            createTime: ''
+          })
+        })
+        this.openPreview(list)
+      } else {
+        this.$emit('handleClick', this.imgItem)
+      }
     }
   }
 })

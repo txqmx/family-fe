@@ -2,7 +2,7 @@
   <div class="article-list">
     <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad">
       <div class="article-item" v-for="item in list" :key="item.id">
-        <img-card :img-item="item" :type="'card'"></img-card>
+        <img-card :img-item="item" :type="'card'" @handleClick="imgPreview"></img-card>
       </div>
     </van-list>
   </div>
@@ -10,6 +10,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { mapMutations } from 'vuex'
 import ImgCard from '@/components/base/ImgCard.vue'
 import api from '@/api'
 export default defineComponent({
@@ -27,19 +28,19 @@ export default defineComponent({
     this.getList()
   },
   methods: {
+    ...mapMutations(['openPreview']),
     onLoad () {
       this.loading = false
     },
     async getList () {
-      this.list = await api.getImgList()
+      this.list = await api.getPhptpList()
     },
-    entryDetail (item) {
-      this.$router.push({
-        name: 'articlesDetail',
-        query: {
-          id: item.id
-        }
+    async imgPreview (item) {
+      console.log(item)
+      const list = await api.getImgList({
+        id: item.content
       })
+      this.openPreview(list)
     }
   }
 })
