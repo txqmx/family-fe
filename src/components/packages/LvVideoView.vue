@@ -1,37 +1,48 @@
 <template>
-  <lv-card-container :title="title" @entryMore="entryMore">
-    <div class="lv-video-container">
-    <div id="lv-video"></div>
-  </div>
+  <lv-card-container :title="title" @more="entryMore">
+    <video-card v-if="datail" :img-item="datail" @handleClick="entryDetail"></video-card>
   </lv-card-container>
 
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import Player from 'xgplayer'
 import LvCardContainer from '@/components/layout/LvCardContainer.vue'
+import VideoCard from '@/components/base/VideoCard.vue'
+import api from '@/api'
 export default defineComponent({
-  components: { LvCardContainer },
+  components: { LvCardContainer, VideoCard },
   name: 'LvVideoView',
   data () {
     return {
-      title: '视频影像'
+      title: '视频影像',
+      datail: ''
     }
   },
   mounted () {
-    const player = new Player({
-      id: 'lv-video',
-      url: '//sf1-cdn-tos.huoshanstatic.com/obj/media-fe/xgplayer_doc_video/mp4/xgplayer-demo-360p.mp4',
-      fluid: true
-    })
+    this.getDetail()
   },
   methods: {
+    async getDetail () {
+      this.datail = await api.getArticlesDetail({
+        id: '16'
+      })
+    },
     enterTree () {
       this.$router.push({ name: 'Tree' })
     },
     entryMore () {
-      console.log(11)
+      this.$router.push({
+        name: 'videoList'
+      })
+    },
+    entryDetail (item) {
+      this.$router.push({
+        name: 'videoDetail',
+        query: {
+          id: item.id
+        }
+      })
     }
   }
 })

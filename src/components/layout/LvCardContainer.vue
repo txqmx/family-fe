@@ -28,7 +28,6 @@ export default defineComponent({
   name: 'LvCardContainer',
   data () {
     return {
-      minHeight: '',
       expanded: false
     }
   },
@@ -43,6 +42,15 @@ export default defineComponent({
   mounted () {
     if (this.isExpanded) {
       this.minHeight = '200px'
+    }
+  },
+  computed: {
+    minHeight () {
+      if (this.isExpanded) {
+        return this.expanded ? '' : '200px'
+      } else {
+        return ''
+      }
     }
   },
   methods: {

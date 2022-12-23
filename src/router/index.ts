@@ -7,8 +7,8 @@ import articlesList from '../views/articlesList.vue'
 import articlesDetail from '../views/articlesDetail.vue'
 import imgList from '../views/imgList.vue'
 import imgDetail from '../views/imgDetail.vue'
-// import articlesList from '../views/articlesList.vue'
-// import articlesDetail from '../views/articlesDetail.vue'
+import videoList from '../views/videoList.vue'
+import videoDetail from '../views/videoDetail.vue'
 import store from '../store/index'
 
 const routes: Array<RouteRecordRaw> = [
@@ -59,14 +59,22 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/imgList',
     name: 'imgList',
-
     component: imgList
   },
   {
     path: '/imgDetail',
     name: 'imgDetail',
-
     component: imgDetail
+  },
+  {
+    path: '/videoList',
+    name: 'videoList',
+    component: videoList
+  },
+  {
+    path: '/videoDetail',
+    name: 'videoDetail',
+    component: videoDetail
   }
 
 ]

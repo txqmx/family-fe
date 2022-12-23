@@ -360,7 +360,9 @@ export class StockTree {
 
     // 边框
     p1.append('image')
-      .attr('xlink:href', 'img/border.de66acbe.png')
+      .attr('xlink:href', (d) => {
+        return require('@/assets/border.png')
+      })
       .attr('preserveAspectRatio', 'none')
       .attr('width', this.config.rectWidth)
       .attr('height', this.config.rectHeight)
