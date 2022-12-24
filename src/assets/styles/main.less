@@ -20,14 +20,68 @@ body {
   margin-bottom: 16px;
 }
 
-// 全局loading
-.loading_overlay {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
+
+// 同页面跳转只要透明度过渡
+.brother-enter-from {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+.brother-enter-active {
+  transition: opacity 0.3s, transform 0.5s;
+}
+
+.brother-enter-to {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.brother-leave-from {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.brother-leave-active {
+  transition: opacity 0.3s, transform 0.5s;
+}
+
+.brother-leave-to {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+// 起始状态
+.slide-enter-from {
+  transform: translateX(100%);
+}
+
+.slide-enter-active {
+  transition: transform 0.3s ease;
+}
+
+.slide-enter-to {
+  transform: translateX(0);
+}
+
+
+// 箭头返回页面效果
+.return-enter-from {
+  transform: translateX(-100%);
+}
+
+.return-enter-active {
+  transition: transform 0.3s ease;
+}
+.return-enter-to {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.return-leave-from {
+  display: none;
+}
+
+.return-leave-to {
+  display: block;
 }

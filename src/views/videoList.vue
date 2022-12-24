@@ -33,7 +33,9 @@ export default defineComponent({
       this.loading = false
     },
     async getList () {
+      this.$setLoading(true)
       this.list = await api.getVideoList()
+      this.$setLoading(false)
     },
     entryDetail (item) {
       this.$router.push({

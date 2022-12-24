@@ -1,14 +1,4 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
-import familySvg from '../views/familySvg.vue'
-import search from '../views/search.vue'
-import articlesList from '../views/articlesList.vue'
-import articlesDetail from '../views/articlesDetail.vue'
-import imgList from '../views/imgList.vue'
-import imgDetail from '../views/imgDetail.vue'
-import videoList from '../views/videoList.vue'
-import videoDetail from '../views/videoDetail.vue'
 import store from '../store/index'
 
 const routes: Array<RouteRecordRaw> = [
@@ -18,7 +8,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       index: 1
     },
-    component: Login
+    component: () => import('../views/Login.vue')
   },
   {
     path: '/',
@@ -26,7 +16,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       index: 1
     },
-    component: Home
+    component: () => import('../views/Home.vue')
   },
   {
     path: '/familySvg',
@@ -34,7 +24,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       index: 2
     },
-    component: familySvg
+    component: () => import('../views/familySvg.vue')
   },
   {
     path: '/search',
@@ -42,39 +32,48 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       index: 3
     },
-    component: search
+    component: () => import('../views/search.vue')
   },
   {
     path: '/articlesList',
     name: 'articlesList',
-
-    component: articlesList
+    meta: {
+      index: 2
+    },
+    component: () => import('../views/articlesList.vue')
   },
   {
     path: '/articlesDetail',
     name: 'articlesDetail',
-
-    component: articlesDetail
+    meta: {
+      index: 3
+    },
+    component: () => import('../views/articlesDetail.vue')
   },
   {
     path: '/imgList',
     name: 'imgList',
-    component: imgList
-  },
-  {
-    path: '/imgDetail',
-    name: 'imgDetail',
-    component: imgDetail
+    meta: {
+      index: 2
+    },
+    component: () => import('../views/imgList.vue')
+
   },
   {
     path: '/videoList',
     name: 'videoList',
-    component: videoList
+    meta: {
+      index: 2
+    },
+    component: () => import('../views/videoList.vue')
   },
   {
     path: '/videoDetail',
     name: 'videoDetail',
-    component: videoDetail
+    meta: {
+      index: 3
+    },
+    component: () => import('../views/videoDetail.vue')
   }
 
 ]
@@ -85,13 +84,14 @@ const router = createRouter({
 })
 const setoRouteTransitionName = (to, from) => {
   let transitionName = ''
+  console.log(to.meta.index, from.meta.index)
   if (to.meta.index > from.meta.index) {
-    transitionName = 'slide-l' // 向左滑动
+    transitionName = 'slide' // 向左滑动
   } else if (to.meta.index < from.meta.index) {
     // 由次级到主级
-    transitionName = 'slide-r'
+    transitionName = 'return'
   } else {
-    transitionName = '' // 同级无过渡效果
+    transitionName = 'border' // 同级无过渡效果
   }
   store.commit('setTransitionName', transitionName)
 }

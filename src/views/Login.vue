@@ -57,11 +57,12 @@ export default defineComponent({
         })
         return
       }
+      this.$setLoading(true)
       api.login({
         username: this.username,
         password: this.password
       }).then(res => {
-        console.log(res)
+        this.$setLoading(false)
         window.sessionStorage.setItem('token', res.token)
         this.$notify({
           type: 'success',

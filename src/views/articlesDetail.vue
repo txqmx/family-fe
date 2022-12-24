@@ -1,32 +1,28 @@
 <template>
   <div class="article-detail">
-    <div class="article-detail-title">{{datail.name}}</div>
+    <div class="article-detail-title">{{ datail.name }}</div>
     <div class="meta-content">
       <span>宗信堂</span>
-      <span>{{datail.createTime}}</span>
+      <span>{{ datail.createTime }}</span>
     </div>
-    <div v-if="datail.info" class="article-detail-info">{{datail.info}}</div>
+    <div v-if="datail.info" class="article-detail-info">{{ datail.info }}</div>
     <div v-if="datail.cover" class="article-cover">
-      <van-image
-        height="12rem"
-        width="100%"
-        :src="datail.cover"
-      >
+      <van-image height="12rem" width="100%" :src="datail.cover">
         <template v-slot:loading>
           <van-loading type="spinner" size="20" />
         </template>
       </van-image>
     </div>
     <div class="article-detail-content">
-      {{datail.content}}
+      {{ datail.content }}
     </div>
+    <van-action-bar>
+      <van-field v-model="value" placeholder="我要评论" />
+      <van-action-bar-icon icon="chat-o" />
+      <van-action-bar-icon icon="like-o" />
+      <van-action-bar-icon icon="share-o" />
+    </van-action-bar>
   </div>
-  <van-action-bar>
-    <van-field v-model="value"  placeholder="我要评论" />
-    <van-action-bar-icon icon="chat-o" />
-    <van-action-bar-icon icon="like-o" />
-    <van-action-bar-icon icon="share-o" />
-  </van-action-bar>
 </template>
 
 <script lang="ts">
@@ -46,9 +42,11 @@ export default defineComponent({
   },
   methods: {
     async getDetail () {
+      this.$setLoading(true)
       this.datail = await api.getArticlesDetail({
         id: this.$route.query.id
       })
+      this.$setLoading(false)
     }
   }
 })
@@ -57,9 +55,9 @@ export default defineComponent({
 <style lang="less" scoped>
 .article-detail {
   background: #ffffff;
-  height: calc(100% - 51px - 51px);
+  height: calc(100% - 66px);
   overflow: auto;
-  padding: 20px 20px ;
+  padding: 20px 20px 20px;
   .article-cover {
     margin-bottom: 10px;
   }
@@ -68,12 +66,12 @@ export default defineComponent({
     font-size: 22px;
     margin-bottom: 14px;
   }
-  .meta-content{
+  .meta-content {
     margin-bottom: 22px;
     line-height: 20px;
     font-size: 15px;
     color: #0000004d;
-    span{
+    span {
       margin-right: 10px;
     }
   }
@@ -83,7 +81,7 @@ export default defineComponent({
     background-color: #f7f7f7;
     border-radius: 8px;
     font-size: 15px;
-    color: rgba(0,0,0,.5);
+    color: rgba(0, 0, 0, 0.5);
     line-height: 20px;
   }
   .article-detail-content {
@@ -94,16 +92,16 @@ export default defineComponent({
     padding-bottom: 30px;
   }
 }
-.van-action-bar{
+.van-action-bar {
   border-top: #f2f2f2 1px solid;
-  .van-field{
+  .van-field {
     padding: 5px 10px;
     line-height: 30px;
   }
-  .van-cell:after{
+  .van-cell:after {
     display: none;
   }
-  /deep/ .van-field__control{
+  /deep/ .van-field__control {
     padding: 0 20px;
     border: #f2f2f2 1px solid;
     border-radius: 20px;

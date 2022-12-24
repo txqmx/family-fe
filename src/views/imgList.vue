@@ -33,7 +33,9 @@ export default defineComponent({
       this.loading = false
     },
     async getList () {
+      this.$setLoading(true)
       this.list = await api.getPhptpList()
+      this.$setLoading(false)
     },
     async imgPreview (item) {
       console.log(item)

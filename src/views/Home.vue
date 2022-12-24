@@ -36,6 +36,7 @@ export default defineComponent({
   methods: {
     ...mapMutations(['setLoading']),
     async getPageDetail () {
+      this.$setLoading(true)
       const data = await api.getPageDetail({
         id: 1
       })
@@ -47,7 +48,7 @@ export default defineComponent({
         }
       }
       this.homeConfig = homeConfig
-      console.log(this.homeConfig)
+      this.$setLoading(false)
     }
   }
 

@@ -2,25 +2,24 @@
   <div class="article-detail">
     <div id="lv-video"></div>
     <div class="video-title">
-      <div class="article-detail-title">{{datail.name}}</div>
+      <div class="article-detail-title">{{ datail.name }}</div>
     </div>
     <div class="video-comment">
       <div class="video-comment-header">
         <div class="title">评论</div>
-        <div class="fabulous">0赞 </div>
+        <div class="fabulous">0赞</div>
       </div>
       <div class="video-comment-contrnt">
         <van-empty description="" />
       </div>
     </div>
-
+    <van-action-bar>
+      <van-field v-model="value" placeholder="我要评论" />
+      <van-action-bar-icon icon="chat-o" />
+      <van-action-bar-icon icon="like-o" />
+      <van-action-bar-icon icon="share-o" />
+    </van-action-bar>
   </div>
-  <van-action-bar>
-    <van-field v-model="value"  placeholder="我要评论" />
-    <van-action-bar-icon icon="chat-o" />
-    <van-action-bar-icon icon="like-o" />
-    <van-action-bar-icon icon="share-o" />
-  </van-action-bar>
 </template>
 
 <script lang="ts">
@@ -41,6 +40,7 @@ export default defineComponent({
   },
   methods: {
     async getDetail () {
+      this.$setLoading(true)
       this.datail = await api.getArticlesDetail({
         id: this.$route.query.id
       })
@@ -49,6 +49,7 @@ export default defineComponent({
         url: this.datail.content,
         fluid: true
       })
+      this.$setLoading(false)
     }
   }
 })
@@ -57,18 +58,18 @@ export default defineComponent({
 <style lang="less" scoped>
 .article-detail {
   background: #ffffff;
-  height: calc(100% - 51px - 51px);
+  height: calc(100% - 46px);
   overflow: auto;
-  padding: 0 0 10px ;
-  .video-title{
+  // padding: 0 0 10px;
+  .video-title {
     padding: 10px;
   }
-  .video-comment{
-    padding:  0  15px;
-    .video-comment-header{
+  .video-comment {
+    padding: 0 15px;
+    .video-comment-header {
       display: flex;
       justify-content: space-between;
-      .fabulous{
+      .fabulous {
         font-size: 14px;
         color: #969799;
       }
@@ -82,12 +83,12 @@ export default defineComponent({
     font-size: 22px;
     margin-bottom: 14px;
   }
-  .meta-content{
+  .meta-content {
     margin-bottom: 22px;
     line-height: 20px;
     font-size: 15px;
     color: #0000004d;
-    span{
+    span {
       margin-right: 10px;
     }
   }
@@ -97,7 +98,7 @@ export default defineComponent({
     background-color: #f7f7f7;
     border-radius: 8px;
     font-size: 15px;
-    color: rgba(0,0,0,.5);
+    color: rgba(0, 0, 0, 0.5);
     line-height: 20px;
   }
   .article-detail-content {
@@ -108,16 +109,16 @@ export default defineComponent({
     padding-bottom: 30px;
   }
 }
-.van-action-bar{
+.van-action-bar {
   border-top: #f2f2f2 1px solid;
-  .van-field{
+  .van-field {
     padding: 5px 10px;
     line-height: 30px;
   }
-  .van-cell:after{
+  .van-cell:after {
     display: none;
   }
-  /deep/ .van-field__control{
+  /deep/ .van-field__control {
     padding: 0 20px;
     border: #f2f2f2 1px solid;
     border-radius: 20px;

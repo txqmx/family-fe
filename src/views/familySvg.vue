@@ -60,7 +60,7 @@ export default defineComponent({
   //   })
   // },
   methods: {
-    ...mapMutations(['setLoading', 'setSearchState', 'setMemberDetailShow', 'setMemberDetail']),
+    ...mapMutations(['setSearchState', 'setMemberDetailShow', 'setMemberDetail']),
     searchSubmit (item) {
       if (this.treeData.id !== item.id) {
         this.getTreeData(item)
@@ -86,7 +86,7 @@ export default defineComponent({
       }
     },
     async getTreeData (row) {
-      this.setLoading(true)
+      this.$setLoading(true)
       if (row) {
         this.treeData = await api.getMemberTree({ id: row.parentId === -1 ? row.id : row.parentId })
         this.cascaderValue = [
@@ -114,7 +114,6 @@ export default defineComponent({
         }
       }
 
-      this.setLoading(false)
       this.tree = new StockTree({
         el: '#treeSvg',
         originTreeData: this.treeData,
@@ -124,6 +123,7 @@ export default defineComponent({
           this.handleClick(d.data, isMeta)
         }
       })
+      this.$setLoading(false)
       // this.tree.drawChart({
       //   type: parentId ? 'appoint' : 'fold',
       //   nodes: [1, 2, 3]

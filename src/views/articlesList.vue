@@ -46,9 +46,11 @@ export default defineComponent({
       this.loading = false
     },
     async getList () {
+      this.$setLoading(true)
       this.list = await api.getArticlesList({
         type: 'zxdt'
       })
+      this.$setLoading(false)
     },
     entryDetail (item) {
       this.$router.push({

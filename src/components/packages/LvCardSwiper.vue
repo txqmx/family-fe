@@ -57,7 +57,7 @@ export default defineComponent({
     }
   },
   methods: {
-    ...mapMutations(['setLoading', 'setSearchState', 'setMemberDetailShow', 'setMemberDetail']),
+    ...mapMutations(['setSearchState', 'setMemberDetailShow', 'setMemberDetail']),
     async getList () {
       const list = await api.getMemberList({
         id: this.info.ids

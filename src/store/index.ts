@@ -6,7 +6,7 @@ export default createStore({
     searchState: false,
     memberDetailShow: false,
     memberDetail: '',
-    transitionName: 'slide-l',
+    transitionName: 'slide',
     // 图片查看ImgPreview
     imgPreviewShow: false,
     imgPreviewList: []
@@ -24,6 +24,7 @@ export default createStore({
     setMemberDetail (state, val) {
       state.memberDetail = val
     },
+    // 路由切换动画
     setTransitionName (state, data) {
       state.transitionName = data
     },

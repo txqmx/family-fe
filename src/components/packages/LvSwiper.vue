@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 <template>
-  <div class="lv-banner-container">
+  <div class="lv-swiper-container">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(item, index) in imgs" :key="index">
         <img :src="item">
@@ -31,11 +31,13 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.lv-banner-container {
+.lv-swiper-container {
   position: relative;
 }
 
-.my-swipe .van-swipe-item {
+.my-swipe {
+  height: 150px;
+  .van-swipe-item {
   color: #fff;
   font-size: 20px;
   text-align: center;
@@ -43,5 +45,6 @@ export default defineComponent({
     width: 100%;
     height: 100%;
   }
+}
 }
 </style>
