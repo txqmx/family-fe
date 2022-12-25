@@ -67,7 +67,7 @@ export default defineComponent({
 <style lang="less" scoped>
 .article-list {
   background: #ffffff;
-  height: calc(100% - 51px);
+  height: 100%;
   overflow: auto;
   .article-item {
     display: flex;

@@ -1,5 +1,5 @@
 <template>
-  <van-popup v-model:show="dialogVisible" position="bottom" closeable round close="handleClose">
+  <van-popup v-if="dialogVisible" v-model:show="dialogVisible" position="bottom" closeable round close="handleClose" teleport="body">
       <div class="tree_tab_content">
         <div class="tree_tab_item">
           <van-row>

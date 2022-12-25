@@ -55,9 +55,10 @@ export default defineComponent({
 <style lang="less" scoped>
 .article-detail {
   background: #ffffff;
-  height: calc(100% - 66px);
+  height: 100%;
   overflow: auto;
-  padding: 20px 20px 20px;
+  padding: 20px 20px 51px 20px;
+  box-sizing: border-box;
   .article-cover {
     margin-bottom: 10px;
   }
@@ -89,7 +90,7 @@ export default defineComponent({
     color: #222;
     font-size: 16px;
     line-height: 1.7;
-    padding-bottom: 30px;
+    padding-bottom: 10px;
   }
 }
 .van-action-bar {

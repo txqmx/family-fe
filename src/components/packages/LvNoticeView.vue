@@ -1,17 +1,8 @@
 <template>
-  <div class="lv-text-container">
-    <div class="lv-text_title">
-      <span>家族动态</span>
-      <span class="more-btn" @click="entryMore">
-        更多
-        <van-icon name="arrow" />
-      </span>
-
-    </div>
-    <van-divider />
+  <lv-card-container :title="title" @more="entryMore">
     <div class="lv-text_content">
       <ul class="lv-list">
-        <li  v-for="item in list" :key="item">
+        <li  v-for="item in dataInfo.dataList" :key="item">
           <div class="lv-item" @click="entryDetail(item)">
             {{item.name}}
           <div>
@@ -21,37 +12,35 @@
         </li>
       </ul>
     </div>
-    <!-- <div class="lv-text_more" @click="showMore">
-      <van-icon v-if="expanded" name="arrow-up" />
-      <van-icon v-else name="arrow-down" />
-    </div> -->
-  </div>
+  </lv-card-container>
+
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import api from '@/api'
+import LvCardContainer from '@/components/layout/LvCardContainer.vue'
+import { lvDataParser } from '@/utils/Parser'
 export default defineComponent({
   name: 'LvNoticeView',
+  components: { LvCardContainer },
   data () {
     return {
-      list: ['杜氏家族族谱建立', '杜氏家族族谱建立'],
-      expanded: false
+      title: '资讯动态',
+      dataInfo: {
+        dataList: []
+      }
     }
   },
-  created () {
-    this.getList()
+  props: {
+    prop: {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      default: () => {}
+    }
+  },
+  async created () {
+    this.dataInfo = await lvDataParser(this.dataInfo, this.prop)
   },
   methods: {
-    async getList () {
-      this.list = await api.getArticlesList({
-        id: '1,2,3',
-        type: 'zxdt'
-      })
-    },
-    showMore () {
-      this.expanded = !this.expanded
-    },
     entryMore () {
       this.$router.push({
         name: 'articlesList',
@@ -73,23 +62,7 @@ export default defineComponent({
 </script>
 
 <style lang="less" scoped>
-.lv-text-container {
-  position: relative;
-  background: #ffffff;
-  padding: 12px 16px 16px;
-  .lv-text_title {
-    font-size: 16px;
-    color: #323233;
-    line-height: 24px;
-    display: flex;
-    justify-content: space-between;
-    .more-btn{
-      cursor: pointer;
-      font-size: 13px;
-      color: #aeafb1;
-    }
-  }
-  .lv-text_content {
+ .lv-text_content {
     padding: 0 4px;
     // margin-bottom: 10px;
     font-size: 14px;
@@ -106,11 +79,4 @@ export default defineComponent({
       }
     }
   }
-  .lv-text_more {
-    text-align: center;
-  }
-  .van-divider {
-    margin: 10px 0 0 0;
-  }
-}
 </style>

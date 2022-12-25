@@ -3,13 +3,13 @@
   <div class="lv-banner-container">
     <div class="banner-left">
       <div class="familt-cover">
-        <img :src="info.img">
+        <img :src="dataInfo.img">
       </div>
     </div>
     <div class="banner-right">
-      <div class="family-title">{{info.title}}</div>
-      <div class="family-address">地址：{{info.address}}</div>
-      <div class="family-info">简介：{{info.info}}</div>
+      <div class="family-title">{{dataInfo.title}}</div>
+      <div class="family-address">地址：{{dataInfo.address}}</div>
+      <div class="family-info">简介：{{dataInfo.info}}</div>
     </div>
     <div class="lv-banner-btn">
       <van-button round type="warning" size="mini" @click="enterTree"
@@ -22,13 +22,28 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { lvDataParser } from '@/utils/Parser'
 export default defineComponent({
   name: 'LvBannerView',
+  data () {
+    return {
+      dataInfo: {
+        title: '',
+        address: '',
+        info: '',
+        img: ''
+      }
+    }
+  },
   props: {
-    info: {
+    prop: {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       default: () => {}
     }
+  },
+  async created () {
+    this.dataInfo = await lvDataParser(this.dataInfo, this.prop)
+    console.log(this.dataInfo)
   },
   methods: {
     enterTree () {

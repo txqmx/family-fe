@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 <template>
   <div class="lv-swiper-container">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-      <van-swipe-item v-for="(item, index) in imgs" :key="index">
+      <van-swipe-item v-for="(item, index) in dataInfo.imgs" :key="index">
         <img :src="item">
       </van-swipe-item>
     </van-swipe>
@@ -11,21 +10,24 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { lvDataParser } from '@/utils/Parser'
 export default defineComponent({
-  name: 'LvSwiper',
+  name: 'LvImgSwiper',
+  data () {
+    return {
+      dataInfo: {
+        imgs: []
+      }
+    }
+  },
   props: {
-    info: {
+    prop: {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       default: () => {}
     }
   },
-  computed: {
-    imgs () {
-      return this.info.imgs
-    }
-  },
-  methods: {
-
+  async created () {
+    this.dataInfo = await lvDataParser(this.dataInfo, this.prop)
   }
 })
 </script>

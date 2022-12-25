@@ -1,14 +1,14 @@
 <template>
-  <div class="img-card-container" :style="{ 'border-radius': radius }" @click="imagePreview">
+  <div class="img-card-container" :style="{ 'border-radius': type=== 'card' ? '8px': '' }" @click="imgPreview">
     <div class="img-contont">
-      <img :src="imgInfo.cover" />
+      <img :src="imgItem.cover" />
       <div class="img-icon">
         <van-icon name="photo" />
-        {{ imgInfo.length }}
+        {{ length }}
       </div>
     </div>
     <div v-if="type === 'card'" class="img-title">
-      <span>{{imgInfo.name}}</span>
+      <span>{{imgItem.name}}</span>
     </div>
   </div>
 </template>
@@ -16,15 +16,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { mapMutations } from 'vuex'
+import api from '@/api'
 export default defineComponent({
   data () {
     return {
-      radius: '',
-      imgInfo: {
-        cover: '',
-        name: '',
-        length: ''
-      }
+      radius: ''
     }
   },
   props: {
@@ -36,40 +32,27 @@ export default defineComponent({
     },
     imgItem: { // 图集卡片
       // eslint-disable-next-line @typescript-eslint/no-empty-function
-      default: ''
+      default: () => {
+        return {
+          cover: '',
+          name: '',
+          content: ''
+        }
+      }
     }
   },
-  mounted () {
-    if (this.type === 'card') {
-      this.radius = '8px'
-    }
-    if (this.imgs && Array.isArray(this.imgs)) {
-      this.imgInfo = {
-        cover: this.imgs[0],
-        name: '',
-        length: this.imgs.length
-      }
-    } else {
-      this.imgInfo = this.imgItem
+  computed: {
+    length () {
+      return this.imgItem.content ? this.imgItem.content.split(',').length : ''
     }
   },
   methods: {
     ...mapMutations(['openPreview']),
-    imagePreview () {
-      if (this.imgs && Array.isArray(this.imgs)) {
-        const list = []
-        this.imgs.forEach(item => {
-          list.push({
-            content: item,
-            name: '',
-            info: '',
-            createTime: ''
-          })
-        })
-        this.openPreview(list)
-      } else {
-        this.$emit('handleClick', this.imgItem)
-      }
+    async imgPreview () {
+      const list = await api.getImgList({
+        id: this.imgItem.content
+      })
+      this.openPreview(list)
     }
   }
 })

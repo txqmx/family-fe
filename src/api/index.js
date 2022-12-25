@@ -11,7 +11,7 @@ const request = axios.create({
   timeout: 1000 * 30 // 超时设置
 })
 request.interceptors.response.use(resSuccess, resError)
-const axiosCus = {
+export const axiosCus = {
   get: (path, data, options) => {
     return request.get(path, Object.assign({}, { params: data }, options))
   },
@@ -21,6 +21,7 @@ const axiosCus = {
 }
 
 export default {
+  axios: (dataSource) => axiosCus[dataSource.method](`${baseUrl}${dataSource.url}`, dataSource.data),
   login: (data) => axiosCus.post(`${baseUrl}/api/user/login`, data),
   getMemberList: (data) => axiosCus.get(`${baseUrl}/api/member/queryList`, data),
   queryMaxLevel: (data) => axiosCus.get(`${baseUrl}/api/member/queryMaxLevel`, data),

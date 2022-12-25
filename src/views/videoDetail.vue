@@ -58,7 +58,7 @@ export default defineComponent({
 <style lang="less" scoped>
 .article-detail {
   background: #ffffff;
-  height: calc(100% - 46px);
+  height: 100%;
   overflow: auto;
   // padding: 0 0 10px;
   .video-title {

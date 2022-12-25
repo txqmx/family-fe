@@ -9,9 +9,9 @@
         :modules="modules"
         class="mySwiper"
       >
-        <swiper-slide v-for="(item, index) in dataList" :key="index">
+        <swiper-slide v-for="(item, index) in dataInfo.dataList" :key="index">
           <div class="avat" @click="handleClick(item)">
-            <img :src="item.avatar" />
+            <img :src="getAvatar(item)" />
             <div class="msg">{{ item.name }}</div>
           </div>
         </swiper-slide>
@@ -25,10 +25,11 @@ import { defineComponent } from 'vue'
 import { mapMutations } from 'vuex'
 import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue'
 import { Autoplay, Pagination, Navigation } from 'swiper'
+import { lvDataParser } from '@/utils/Parser'
 import api from '@/api'
 import 'swiper/swiper-bundle.min.css'
 export default defineComponent({
-  name: 'LvCardSwiper',
+  name: 'LvMemberSwiper',
   components: {
     Swiper,
     SwiperSlide
@@ -36,43 +37,33 @@ export default defineComponent({
   data () {
     return {
       modules: [Autoplay, Pagination, Navigation],
-      dataList: [],
-      img: require('@/assets/11.png')
+      dataInfo: {
+        dataList: []
+      }
     }
   },
   props: {
-    info: {
+    prop: {
       // eslint-disable-next-line @typescript-eslint/no-empty-function
       default: () => {}
     }
   },
-  mounted () {
-    if (this.info) {
-      this.getList()
-    }
-  },
-  watch: {
-    info () {
-      this.getList()
-    }
+  async created () {
+    this.dataInfo = await lvDataParser(this.dataInfo, this.prop)
   },
   methods: {
     ...mapMutations(['setSearchState', 'setMemberDetailShow', 'setMemberDetail']),
-    async getList () {
-      const list = await api.getMemberList({
-        id: this.info.ids
-      })
-      list.forEach((item) => {
-        if (!item.avatar) {
-          item.avatar =
+    getAvatar (item) {
+      let avatar = ''
+      if (!item.avatar) {
+        avatar =
             item.sex === 0
               ? require('@/assets/11.png')
               : require('@/assets/22.png')
-        } else {
-          item.avatar = item.avatarUrl
-        }
-      })
-      this.dataList = list
+      } else {
+        avatar = item.avatarUrl
+      }
+      return avatar
     },
     async handleClick (item, type) {
       const itemDetail = await api.getMemberDetail({

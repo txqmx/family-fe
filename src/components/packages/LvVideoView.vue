@@ -1,6 +1,6 @@
 <template>
   <lv-card-container :title="title" @more="entryMore">
-    <video-card v-if="datail" :img-item="datail" @handleClick="entryDetail"></video-card>
+    <video-card v-if="dataInfo.videoItem" :img-item="dataInfo.videoItem" @handleClick="entryDetail"></video-card>
   </lv-card-container>
 
 </template>
@@ -9,6 +9,7 @@
 import { defineComponent } from 'vue'
 import LvCardContainer from '@/components/layout/LvCardContainer.vue'
 import VideoCard from '@/components/base/VideoCard.vue'
+import { lvDataParser } from '@/utils/Parser'
 import api from '@/api'
 export default defineComponent({
   components: { LvCardContainer, VideoCard },
@@ -16,20 +17,25 @@ export default defineComponent({
   data () {
     return {
       title: '视频影像',
-      datail: ''
+      dataInfo: {
+        videoItem: ''
+      }
     }
   },
-  mounted () {
-    this.getDetail()
+  props: {
+    prop: {
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      default: () => {}
+    }
+  },
+  async created () {
+    this.dataInfo = await lvDataParser(this.dataInfo, this.prop)
   },
   methods: {
     async getDetail () {
       this.datail = await api.getArticlesDetail({
         id: '16'
       })
-    },
-    enterTree () {
-      this.$router.push({ name: 'Tree' })
     },
     entryMore () {
       this.$router.push({

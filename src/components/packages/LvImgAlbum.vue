@@ -1,6 +1,6 @@
 <template>
-  <lv-card-container :title="title" @more="entryMore" :isExpanded="true">
-    <div v-html="dataInfo.detail"></div>
+  <lv-card-container :title="title" @more="entryMore">
+    <img-card :img-item="dataInfo.imgItem"></img-card>
   </lv-card-container>
 </template>
 
@@ -8,15 +8,14 @@
 import { defineComponent } from 'vue'
 import { lvDataParser } from '@/utils/Parser'
 import LvCardContainer from '@/components/layout/LvCardContainer.vue'
+import ImgCard from '@/components/base/ImgCard.vue'
 export default defineComponent({
-  name: 'LvTextView',
-  components: { LvCardContainer },
+  name: 'LvImgAlbum',
   data () {
     return {
-      title: '家族简介',
-      expanded: false,
+      title: '图集相册',
       dataInfo: {
-        detail: ''
+        imgItem: {}
       }
     }
   },
@@ -29,12 +28,17 @@ export default defineComponent({
   async created () {
     this.dataInfo = await lvDataParser(this.dataInfo, this.prop)
   },
+  components: { LvCardContainer, ImgCard },
   methods: {
     entryMore () {
-      console.log(111)
+      this.$router.push({
+        name: 'imgList'
+      })
     }
   }
 })
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+
+</style>
