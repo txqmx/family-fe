@@ -3,7 +3,7 @@
   <div class="lv-banner-container">
     <div class="banner-left">
       <div class="familt-cover">
-        <img :src="dataInfo.img">
+        <img :src="imgUrlParser(dataInfo.img)" />
       </div>
     </div>
     <div class="banner-right">
@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import { lvDataParser } from '@/utils/Parser'
+import { lvDataParser, imgUrlParser } from '@/utils/Parser'
 export default defineComponent({
   name: 'LvBannerView',
   data () {
@@ -32,7 +32,8 @@ export default defineComponent({
         address: '',
         info: '',
         img: ''
-      }
+      },
+      imgUrlParser: imgUrlParser
     }
   },
   props: {

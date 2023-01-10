@@ -1,7 +1,7 @@
 <template>
   <div class="img-card-container" :style="{ 'border-radius': type=== 'card' ? '8px': '' }" @click="imgPreview">
     <div class="img-contont">
-      <img :src="imgItem.cover" />
+      <img :src="imgUrlParser(imgItem.cover)" />
       <div class="img-icon">
         <van-icon name="photo" />
         {{ length }}
@@ -16,11 +16,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { mapMutations } from 'vuex'
+import { imgUrlParser } from '@/utils/Parser'
 import api from '@/api'
 export default defineComponent({
   data () {
     return {
-      radius: ''
+      radius: '',
+      imgUrlParser: imgUrlParser
     }
   },
   props: {

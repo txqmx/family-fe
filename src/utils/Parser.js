@@ -20,3 +20,15 @@ export const lvDataParser = async (oriData, prop) => {
   }
   return data
 }
+
+const baseUrl = 'http://localhost:7001/upload/'
+
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+export const imgUrlParser = (url) => {
+  if (!url) return ''
+  if (url.indexOf('http') !== -1) {
+    return url
+  } else {
+    return `${baseUrl}${url}`
+  }
+}

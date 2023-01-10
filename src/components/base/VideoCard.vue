@@ -1,7 +1,7 @@
 <template>
   <div class="img-card-container" :style="{ 'border-radius': radius }" @click="imagePreview">
     <div class="img-contont">
-      <img :src="imgInfo.cover" />
+      <img :src="imgUrlParser(imgInfo.cover)" />
       <div class="img-icon">
         <van-icon name="play-circle" />
       </div>
@@ -15,6 +15,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { mapMutations } from 'vuex'
+import { imgUrlParser } from '@/utils/Parser'
 export default defineComponent({
   name: 'VideoCard',
   data () {
@@ -24,7 +25,8 @@ export default defineComponent({
         cover: '',
         name: '',
         length: ''
-      }
+      },
+      imgUrlParser: imgUrlParser
     }
   },
   props: {

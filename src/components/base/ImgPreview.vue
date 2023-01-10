@@ -8,7 +8,7 @@
     </div>
     <van-swipe class="my-swipe" @change="swiperChange">
       <van-swipe-item v-for="(item, index) in imgPreviewList" :key="index">
-        <img :src="item.content" />
+        <img :src="imgUrlParser(item.content)" />
       </van-swipe-item>
       <template #indicator="{ active, total }">
         <div class="custom-indicator">{{ active + 1 }}/{{ total }}</div>
@@ -31,10 +31,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { mapMutations } from 'vuex'
+import { imgUrlParser } from '@/utils/Parser'
 export default defineComponent({
   data () {
     return {
-      index: 0
+      index: 0,
+      imgUrlParser: imgUrlParser
     }
   },
   props: {
