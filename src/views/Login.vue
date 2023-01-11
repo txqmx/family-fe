@@ -86,14 +86,14 @@ export default defineComponent({
 <style scoped lang="less">
 .login {
   overflow: auto;
-  height: calc(100% - 46px);
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 
   .login-container {
     position: absolute;
-    top: 26%;
+    top: 18%;
 
     .login-title {
       font-size: 25px;

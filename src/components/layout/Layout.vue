@@ -1,7 +1,7 @@
 <template>
   <div class="layout-cantainer">
     <van-nav-bar
-      v-show="routeName !== 'Login'"
+      v-show="!hideBar"
       class="vav-bar"
       title="宗信堂"
       left-arrow
@@ -16,7 +16,7 @@
         />
       </template>
     </van-nav-bar>
-    <div class="layout-content">
+    <div :class="['layout-content',hideBar?'hide-bar':'']">
       <slot></slot>
     </div>
   </div>
@@ -35,6 +35,10 @@ export default defineComponent({
   computed: {
     routeName () {
       return this.$route.name
+    },
+    hideBar () {
+      const route = ['Login']
+      return route.includes(this.routeName)
     }
   },
   methods: {
@@ -43,7 +47,7 @@ export default defineComponent({
       history.back()
     },
     search () {
-      this.$router.push({ name: 'search' })
+      this.$store.commit('setSearchState', true)
     }
   }
 })
@@ -59,6 +63,9 @@ export default defineComponent({
     position: relative;
     height: calc(100% - 47px);
     overflow: hidden;
+  }
+  .hide-bar{
+    height: 100%
   }
 }
 </style>

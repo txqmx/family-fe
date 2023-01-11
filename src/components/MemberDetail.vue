@@ -1,5 +1,5 @@
 <template>
-  <van-popup v-if="dialogVisible" v-model:show="dialogVisible" position="bottom" closeable round close="handleClose" teleport="body">
+  <van-popup  v-model:show="dialogVisible" position="bottom" closeable round teleport="body">
       <div class="tree_tab_content">
         <div class="tree_tab_item">
           <van-row>
@@ -46,7 +46,6 @@ export default defineComponent({
   name: 'MemberDetail',
   data () {
     return {
-
     }
   },
   computed: {
@@ -55,17 +54,33 @@ export default defineComponent({
         return this.$store.state.memberDetailShow
       },
       set (val) {
-        this.setMemberDetailShow(val)
+        if (!val) {
+          this.handleClose()
+        }
       }
     },
     currentItem () {
       return this.$store.state.memberDetail
     }
   },
+  watch: {
+    dialogVisible (val) {
+      if (val) {
+        window.history.pushState(null, null, window.location.hash)
+        window.addEventListener('popstate', this.handleClose, false)
+      } else {
+        window.removeEventListener('popstate', this.handleClose, false)
+      }
+    }
+  },
   methods: {
     ...mapMutations(['setMemberDetailShow', 'setMemberDetail']),
-    handleClose () {
+    handleClose (e) {
+      if (!e || e.type !== 'popstate') {
+        window.history.back()
+      }
       this.setMemberDetail('')
+      this.setMemberDetailShow(false)
     },
     dateFormat (date) {
       if (!date) { return '-' }

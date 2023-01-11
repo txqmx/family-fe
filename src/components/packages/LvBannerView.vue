@@ -67,7 +67,7 @@ export default defineComponent({
   background: #ffffff2e;
   .banner-left {
     height: 100%;
-    width: 110px;
+    width: 95px;
     .familt-cover {
       width: 5em;
       height: 7em;

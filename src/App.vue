@@ -9,7 +9,9 @@
   <layout>
     <router-view v-slot="{ Component, route }">
       <transition :name="state.transitionName">
-        <component :is="Component" :key="route.path" mode="out-in" />
+        <keep-alive :exclude="['Login']">
+          <component :is="Component" :key="route.path" mode="out-in" />
+        </keep-alive>
       </transition>
     </router-view>
   </layout>

@@ -40,6 +40,14 @@ export default defineComponent({
       list: []
     }
   },
+  mounted () {
+    document.onkeydown = null // 避免触发其他页面事件
+    window.history.pushState(null, null, window.location.hash)
+    window.addEventListener('popstate', this.onCancel, false)
+  },
+  unmounted () {
+    window.removeEventListener('popstate', this.onCancel, false)
+  },
   methods: {
     ...mapMutations(['setSearchState']),
     async getList () {
@@ -55,11 +63,10 @@ export default defineComponent({
       this.getList()
     },
     handleClick (item) {
-      // this.$emit('searchSubmit', item)
-      this.$router.replace({ name: 'familySvg', params: item })
+      history.back() // ??
+      this.$emit('searchSubmit', item)
     },
     onCancel () {
-      history.back()
       this.setSearchState(false)
     }
   }

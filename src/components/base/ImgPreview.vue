@@ -52,9 +52,20 @@ export default defineComponent({
       return this.imgPreviewList[this.index]
     }
   },
+  mounted () {
+    window.history.pushState(null, null, window.location.hash)
+    window.addEventListener('popstate', this.back, false)
+  },
+  unmounted () {
+    window.removeEventListener('popstate', this.back, false)
+  },
   methods: {
     ...mapMutations(['closePreview']),
-    back () {
+
+    back (e) {
+      if (!e || e.type !== 'popstate') {
+        window.history.back()
+      }
       this.index = 0
       this.closePreview()
     },

@@ -9,8 +9,8 @@
       <van-button v-if="!isRoot" type="warning" size="small" @click="goBackRoot">回到根节点</van-button>
     </div>
     <search v-if="searchShow" @searchSubmit="searchSubmit"></search>
-    <van-popup v-model:show="show" round position="bottom">
-      <van-cascader v-model="cascaderValue" title="请选择" :options="options" @close="show = false" @change="onChange"
+    <van-popup v-model:show="show" round position="bottom" :close-on-click-overlay="false">
+      <van-cascader v-model="cascaderValue" title="请选择" :options="options" @close="close" @change="onChange"
         @finish="onFinish" />
     </van-popup>
   </div>
@@ -52,15 +52,24 @@ export default defineComponent({
       return this.$store.state.searchState
     }
   },
-  // beforeRouteEnter (to, from, next) {
-  //   next(vm => {
-  //     vm.params = to.params
-
-  //   // 通过 `vm` 访问组件实例
-  //   })
-  // },
+  watch: {
+    show (val) {
+      if (val) {
+        window.history.pushState(null, null, window.location.hash)
+        window.addEventListener('popstate', this.close, false)
+      } else {
+        window.removeEventListener('popstate', this.close, false)
+      }
+    }
+  },
   methods: {
     ...mapMutations(['setSearchState', 'setMemberDetailShow', 'setMemberDetail']),
+    close (e) {
+      this.show = false
+      if (!e) {
+        window.history.back()
+      }
+    },
     searchSubmit (item) {
       if (this.treeData.id !== item.id) {
         this.getTreeData(item)
@@ -167,6 +176,7 @@ export default defineComponent({
     onFinish ({ selectedOptions }) {
       this.getTreeData(selectedOptions[1])
       this.show = false
+      window.history.back()
     }
 
   },
