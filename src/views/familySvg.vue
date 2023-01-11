@@ -2,18 +2,18 @@
 <template>
   <div id="treeSvg">
     <div id="treeRoot"></div>
-    <div v-if="tree" class="family_btn">
-      <van-button type="warning" size="small" @click="show=true">{{fieldValue}}</van-button>
-      <van-button type="warning" size="small" @click="enlarge">全部展开</van-button>
-      <van-button type="warning" size="small" @click="micrify">全部收起</van-button>
-      <van-button v-if="!isRoot" type="warning" size="small" @click="goBackRoot">回到根节点</van-button>
-    </div>
-    <search v-if="searchShow" @searchSubmit="searchSubmit"></search>
-    <van-popup v-model:show="show" round position="bottom" :close-on-click-overlay="false">
-      <van-cascader v-model="cascaderValue" title="请选择" :options="options" @close="close" @change="onChange"
-        @finish="onFinish" />
-    </van-popup>
   </div>
+  <div v-if="tree" class="family_btn">
+    <van-button type="warning" size="small" @click="show = true">{{ fieldValue }}</van-button>
+    <van-button type="warning" size="small" @click="enlarge">全部展开</van-button>
+    <van-button type="warning" size="small" @click="micrify">全部收起</van-button>
+    <van-button v-if="!isRoot" type="warning" size="small" @click="goBackRoot">回到根节点</van-button>
+  </div>
+  <search v-if="searchShow" @searchSubmit="searchSubmit"></search>
+  <van-popup v-model:show="show" round position="bottom" :close-on-click-overlay="false">
+    <van-cascader v-model="cascaderValue" title="请选择" :options="options" @close="close" @change="onChange"
+      @finish="onFinish" />
+  </van-popup>
 </template>
 
 <script lang="ts">
@@ -187,7 +187,7 @@ export default defineComponent({
 <style lang="less">
 #treeSvg {
   overflow: hidden;
-  height: calc(100% - 51px);
+  height: calc(100% - 55px);
   width: 100%;
   padding-top: 5px;
 

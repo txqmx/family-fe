@@ -10,7 +10,7 @@
         <div class="article-item" @click="entryDetail(item)">
           <div class="article-msg">
             <div class="article-title">
-                <van-tag color="#fef0f0" text-color="#f56c6c">资讯动态</van-tag>
+                <van-tag color="#fef0f0" text-color="#f56c6c">家族动态</van-tag>
                 {{ item.name }}
             </div>
             <div class="article-author">{{ item.name }}</div>
