@@ -9,13 +9,16 @@
     <div class="banner-right">
       <div class="family-title">{{dataInfo.title}}</div>
       <div class="family-address">地址：{{dataInfo.address}}</div>
-      <div class="family-info">简介：{{dataInfo.info}}</div>
+      <div class="family-info">
+        <span class="info-title">简介：</span>
+        <span>{{dataInfo.info}}</span>
+      </div>
     </div>
-    <div class="lv-banner-btn">
+    <!-- <div class="lv-banner-btn">
       <van-button round type="warning" size="mini" @click="enterTree"
         >进入族谱</van-button
       >
-    </div>
+    </div> -->
     <div class="background"></div>
   </div>
 </template>
@@ -61,6 +64,7 @@ export default defineComponent({
   height: 120px;
   padding: 16px 10px 10px;
   display: flex;
+  background: #ffffff2e;
   .banner-left {
     height: 100%;
     width: 110px;
@@ -91,6 +95,11 @@ export default defineComponent({
       font-size: 14px;
       color: #969799;
       margin-bottom: 5px;
+      display: flex;
+      .info-title{
+        display: inline-block;
+        width: 45px;
+      }
     }
   }
    .lv-banner-btn {

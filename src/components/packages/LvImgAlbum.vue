@@ -13,7 +13,7 @@ export default defineComponent({
   name: 'LvImgAlbum',
   data () {
     return {
-      title: '图集相册',
+      title: '家族相册',
       dataInfo: {
         imgItem: {}
       }

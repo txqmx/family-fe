@@ -17,8 +17,9 @@ import LvImgAlbum from '@/components/packages/LvImgAlbum.vue'
 import LvVideoView from '@/components/packages/LvVideoView.vue'
 import LvBannerView from '@/components/packages/LvBannerView.vue'
 import LvNoticeView from '@/components/packages/LvNoticeView.vue'
+import LvMenu from '@/components/packages/LvMenu.vue'
 export default defineComponent({
-  components: { LvImgSwiper, LvTextView, LvMemberSwiper, LvImgAlbum, LvVideoView, LvBannerView, LvNoticeView },
+  components: { LvImgSwiper, LvTextView, LvMemberSwiper, LvImgAlbum, LvVideoView, LvBannerView, LvNoticeView, LvMenu },
   name: 'Home',
   data () {
     return {

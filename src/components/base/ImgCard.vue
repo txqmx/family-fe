@@ -52,7 +52,7 @@ export default defineComponent({
     ...mapMutations(['openPreview']),
     async imgPreview () {
       const list = await api.getImgList({
-        id: this.imgItem.content
+        type: this.imgItem.code
       })
       this.openPreview(list)
     }

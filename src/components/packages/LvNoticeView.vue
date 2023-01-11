@@ -25,7 +25,7 @@ export default defineComponent({
   components: { LvCardContainer },
   data () {
     return {
-      title: '资讯动态',
+      title: '家族动态',
       dataInfo: {
         dataList: []
       }

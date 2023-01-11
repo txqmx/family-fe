@@ -5,7 +5,7 @@ import { resSuccess, resError } from './interceptors'
 
 // import userTree from './userTree.json'
 // const baseUrl = 'http://test.zongxintang.com'
-export const baseUrl = 'http://localhost:7001'
+export const baseUrl = 'http://huanglf.zongxintang.com'
 
 const request = axios.create({
   timeout: 1000 * 30 // 超时设置

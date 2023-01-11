@@ -17,7 +17,7 @@
         </div>
         <van-image
             class="article-img"
-              :src="item.cover"
+              :src="imgUrlParser(item.cover)"
             >
             </van-image>
         </div>
@@ -28,6 +28,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import { imgUrlParser } from '@/utils/Parser'
 import api from '@/api'
 export default defineComponent({
   name: 'articlesList',
@@ -35,7 +36,8 @@ export default defineComponent({
     return {
       loading: true,
       finished: false,
-      list: []
+      list: [],
+      imgUrlParser: imgUrlParser
     }
   },
   created () {

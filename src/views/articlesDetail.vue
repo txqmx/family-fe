@@ -7,14 +7,16 @@
     </div>
     <div v-if="datail.info" class="article-detail-info">{{ datail.info }}</div>
     <div v-if="datail.cover" class="article-cover">
-      <van-image height="12rem" width="100%" :src="datail.cover">
+      <van-image height="12rem" width="100%" :src="imgUrlParser(datail.cover)">
         <template v-slot:loading>
           <van-loading type="spinner" size="20" />
         </template>
       </van-image>
     </div>
-    <div class="article-detail-content">
-      {{ datail.content }}
+    <div class="article-detail-content" >
+      <div v-html="datail.content">
+
+      </div>
     </div>
     <van-action-bar>
       <van-field v-model="value" placeholder="我要评论" />
@@ -28,13 +30,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import api from '@/api'
+import { imgUrlParser } from '@/utils/Parser'
 export default defineComponent({
   name: 'articlesDetail',
   data () {
     return {
       loading: true,
       finished: false,
-      datail: {}
+      datail: {},
+      imgUrlParser: imgUrlParser
     }
   },
   created () {

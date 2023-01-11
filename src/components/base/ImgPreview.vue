@@ -8,7 +8,7 @@
     </div>
     <van-swipe class="my-swipe" @change="swiperChange">
       <van-swipe-item v-for="(item, index) in imgPreviewList" :key="index">
-        <img :src="imgUrlParser(item.content)" />
+        <img :src="imgUrlParser(item.cover)" />
       </van-swipe-item>
       <template #indicator="{ active, total }">
         <div class="custom-indicator">{{ active + 1 }}/{{ total }}</div>

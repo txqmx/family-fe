@@ -33,7 +33,7 @@ export default defineComponent({
       homeActive: '0',
       loginShow1: true,
       loginShow: false,
-      username: '杜氏家族族谱',
+      username: '黄氏家族江夏堂族谱',
       password: ''
     }
   },
@@ -71,6 +71,7 @@ export default defineComponent({
         })
         this.$router.replace({ path: '/' })
       }).catch((e) => {
+        this.$setLoading(false)
         this.$notify({
           type: 'warning',
           message: e.errMsg

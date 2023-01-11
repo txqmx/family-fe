@@ -1,6 +1,6 @@
 <template>
   <div class="lv-card-swiper">
-    <div class="lv-card-left">家族榜</div>
+    <div class="lv-card-left">功德榜</div>
     <div class="lv-card-right">
       <swiper
         ref="mySwiper"
