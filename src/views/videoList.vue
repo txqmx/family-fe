@@ -27,6 +27,9 @@ export default defineComponent({
   created () {
     this.getList()
   },
+  activated () {
+    this.getList()
+  },
   methods: {
     ...mapMutations(['openPreview']),
     onLoad () {

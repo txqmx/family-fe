@@ -2,7 +2,8 @@
   <div class="lv-swiper-container">
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(item, index) in dataInfo.imgs" :key="index">
-        <img :src="imgUrlParser(item)" />
+        <van-image width="100%" height="100%" :src="imgUrlParser(item)"/>
+        <!-- <img :src="imgUrlParser(item)" /> -->
       </van-swipe-item>
     </van-swipe>
   </div>

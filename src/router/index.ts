@@ -1,7 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import store from '../store/index'
 import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
 import familySvg from '../views/familySvg.vue'
 
 const routes: Array<RouteRecordRaw> = [

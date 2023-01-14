@@ -26,6 +26,9 @@ export default defineComponent({
   created () {
     this.getList()
   },
+  activated () {
+    this.getList()
+  },
   methods: {
     onLoad () {
       this.loading = false

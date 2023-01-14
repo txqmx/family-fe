@@ -3,15 +3,15 @@
   <div class="lv-banner-container">
     <div class="banner-left">
       <div class="familt-cover">
-        <img :src="imgUrlParser(dataInfo.img)" />
+        <van-image :src="imgUrlParser(dataInfo.img)"/>
       </div>
     </div>
     <div class="banner-right">
-      <div class="family-title">{{dataInfo.title}}</div>
-      <div class="family-address">地址：{{dataInfo.address}}</div>
+      <div class="family-title">{{ dataInfo.title }}</div>
+      <div class="family-address">地址：{{ dataInfo.address }}</div>
       <div class="family-info">
         <span class="info-title">简介：</span>
-        <span>{{dataInfo.info}}</span>
+        <span>{{ dataInfo.info }}</span>
       </div>
     </div>
     <!-- <div class="lv-banner-btn">
@@ -61,7 +61,7 @@ export default defineComponent({
 .lv-banner-container {
   position: relative;
   z-index: 1;
-  height: 120px;
+  height: 110px;
   padding: 16px 10px 10px;
   display: flex;
   background: #ffffff2e;
@@ -70,9 +70,11 @@ export default defineComponent({
     width: 95px;
     .familt-cover {
       width: 5em;
-      height: 7em;
-      background: #444;
-      img{
+      height: 6em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      img {
         width: 100%;
         height: 100%;
       }
@@ -96,13 +98,13 @@ export default defineComponent({
       color: #969799;
       margin-bottom: 5px;
       display: flex;
-      .info-title{
+      .info-title {
         display: inline-block;
-        width: 45px;
+        // width: 45px;
       }
     }
   }
-   .lv-banner-btn {
+  .lv-banner-btn {
     position: absolute;
     bottom: 6px;
     right: 20px;

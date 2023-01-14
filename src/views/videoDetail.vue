@@ -38,6 +38,9 @@ export default defineComponent({
   created () {
     this.getDetail()
   },
+  activated () {
+    this.getDetail()
+  },
   methods: {
     async getDetail () {
       this.$setLoading(true)

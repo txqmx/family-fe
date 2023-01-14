@@ -187,9 +187,9 @@ export default defineComponent({
 <style lang="less">
 #treeSvg {
   overflow: hidden;
-  height: calc(100% - 55px);
+  height: calc(100% - 60px);
   width: 100%;
-  padding-top: 5px;
+  margin-top: 5px;
 
   .identity-msg {
     stroke: #fff;
