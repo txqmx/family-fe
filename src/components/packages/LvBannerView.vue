@@ -3,7 +3,7 @@
   <div class="lv-banner-container">
     <div class="banner-left">
       <div class="familt-cover">
-        <van-image :src="imgUrlParser(dataInfo.img)"/>
+        <van-image width="100%" height="100%" :src="imgUrlParser(dataInfo.img)"/>
       </div>
     </div>
     <div class="banner-right">
@@ -69,8 +69,8 @@ export default defineComponent({
     height: 100%;
     width: 95px;
     .familt-cover {
-      width: 5em;
-      height: 6em;
+      width: 80px;
+      height: 103px;
       display: flex;
       align-items: center;
       justify-content: center;
