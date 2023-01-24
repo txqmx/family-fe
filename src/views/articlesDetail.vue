@@ -1,6 +1,9 @@
 <template>
   <div class="article-detail">
-    <div class="article-detail-title">{{ datail.name }}</div>
+    <div class="article-detail-title">
+      <span>{{ datail.name }}</span>
+      <lv-audio-view v-if="datail.enclosure && showAudio" :source="datail.enclosure"></lv-audio-view>
+    </div>
     <div class="meta-content">
       <span>宗信堂</span>
       <span>{{ datail.createTime }}</span>
@@ -31,13 +34,16 @@
 import { defineComponent } from 'vue'
 import api from '@/api'
 import { imgUrlParser } from '@/utils/Parser'
+import LvAudioView from '@/components/base/LvAudioView.vue'
 export default defineComponent({
+  components: { LvAudioView },
   name: 'articlesDetail',
   data () {
     return {
       loading: true,
       finished: false,
       datail: {},
+      showAudio: true,
       imgUrlParser: imgUrlParser
     }
   },
@@ -52,6 +58,10 @@ export default defineComponent({
       this.$setLoading(true)
       this.datail = await api.getArticlesDetail({
         id: this.$route.query.id
+      })
+      this.showAudio = false
+      this.$nextTick(() => {
+        this.showAudio = true
       })
       this.$setLoading(false)
     }
@@ -70,6 +80,9 @@ export default defineComponent({
     margin-bottom: 10px;
   }
   .article-detail-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     line-height: 1.4;
     font-size: 22px;
     margin-bottom: 14px;

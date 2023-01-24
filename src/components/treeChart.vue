@@ -84,8 +84,8 @@ export default defineComponent({
     return {
       // treeData: {},
       defaultImg: {
-        0: require('@/assets/11.png'),
-        1: require('@/assets/22.png')
+        0: require('@/assets/111.jpeg'),
+        1: require('@/assets/222.jpeg')
       }
 
     }

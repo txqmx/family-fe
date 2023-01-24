@@ -99,7 +99,7 @@ const setoRouteTransitionName = (to, from) => {
 }
 router.beforeEach((to, from, next) => {
   const token = window.sessionStorage.getItem('token')
-  if (to.name !== 'Login' && to.name !== 'familySvg' && !token) {
+  if (to.name !== 'Login' && !token) {
     next({ path: '/Login' })
   }
   setoRouteTransitionName(to, from)

@@ -372,9 +372,9 @@ export class StockTree {
     p1.append('image')
       .attr('xlink:href', (d) => {
         if (isMeta) {
-          return d.data.mateInfo.avatarUrl || require('@/assets/11.png')
+          return d.data.mateInfo.avatarUrl || require('@/assets/111.jpeg')
         }
-        return d.data.avatarUrl || require('@/assets/11.png')
+        return d.data.avatarUrl || require('@/assets/111.jpeg')
       })
       .attr('preserveAspectRatio', 'none')
       .attr('width', this.config.avatarWidth)

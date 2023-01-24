@@ -8,21 +8,27 @@
 import { defineComponent } from 'vue'
 import 'xgplayer'
 import Music from 'xgplayer-music'
+import { imgUrlParser } from '@/utils/Parser'
 export default defineComponent({
   name: 'LvAudioView',
+  props: {
+    source: {
+      default: ''
+    }
+  },
   mounted () {
-    const music = new Music({
-      id: 'lv-audio',
-      url: [{ src: 'madia/1234567.mp3', name: '' }],
-      mode: 'loop',
-      status: 'off',
-      // controls: false
-      ignores: ['next', 'forward', 'backward', 'prev', 'cover', 'name', 'time']
-    })
+    this.init()
   },
   methods: {
-    enterTree () {
-      this.$router.push({ name: 'Tree' })
+    init () {
+      const music = new Music({
+        id: 'lv-audio',
+        url: [{ src: imgUrlParser(this.source), name: '' }],
+        mode: 'loop',
+        status: 'off',
+        // controls: false
+        ignores: ['next', 'forward', 'backward', 'prev', 'cover', 'name', 'time']
+      })
     }
   }
 })
@@ -30,10 +36,12 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .lv-audio-container {
-  position: absolute;
-  right: 40px;
-  top: 32px;
-  transform: scale(0.6);
+  width: 35px;
+    height: 35px;
+  // position: absolute;
+  // right: 40px;
+  // top: 32px;
+  transform: scale(0.7);
   #lv-audio{
     width: 100% !important;
     height: 100% !important;

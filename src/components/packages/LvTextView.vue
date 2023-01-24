@@ -16,7 +16,8 @@ export default defineComponent({
       title: '家族简介',
       expanded: false,
       dataInfo: {
-        detail: ''
+        detail: '',
+        moreEntry: ''
       }
     }
   },
@@ -31,7 +32,9 @@ export default defineComponent({
   },
   methods: {
     entryMore () {
-      console.log(111)
+      if (this.prop.detail.moreEntry) {
+        this.$router.push(this.prop.detail.moreEntry)
+      }
     }
   }
 })

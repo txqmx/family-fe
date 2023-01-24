@@ -58,8 +58,8 @@ export default defineComponent({
       if (!item.avatar) {
         avatar =
             item.sex === 0
-              ? require('@/assets/11.png')
-              : require('@/assets/22.png')
+              ? require('@/assets/111.jpeg')
+              : require('@/assets/222.jpeg')
       } else {
         avatar = item.avatarUrl
       }
