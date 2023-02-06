@@ -34,6 +34,7 @@ export default defineComponent({
       store.commit('setSearchState', false)
       history.back()
     }
+
     const search = () => {
       router.push({ name: 'search' })
       // store.commit('setSearchState', true)

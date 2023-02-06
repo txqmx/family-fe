@@ -9,6 +9,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import api from '@/api'
+import { getUrlParam } from '@/utils/Url'
 import LvImgSwiper from '@/components/packages/LvImgSwiper.vue'
 import LvTextView from '@/components/packages/LvTextView.vue'
 import { mapMutations } from 'vuex'
@@ -31,6 +32,8 @@ export default defineComponent({
     }
   },
   created () {
+    const familyCode = getUrlParam('family')
+    window.localStorage.setItem('faimly', familyCode)
     this.getPageDetail()
   },
 

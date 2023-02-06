@@ -6,10 +6,14 @@ export default createStore({
     searchState: false,
     memberDetailShow: false,
     memberDetail: '',
-    transitionName: 'slide',
+    transitionName: 'border',
     // 图片查看ImgPreview
     imgPreviewShow: false,
-    imgPreviewList: []
+    imgPreviewList: [],
+    // 微信配置相关
+    weixinConfig: {}, // 微信配置
+    onWeixin: navigator.userAgent.toLowerCase().indexOf('micromessenger') !== -1, // 微信环境
+    onMiniPrograms: false // 微信小程序环境
   },
   mutations: {
     setLoading (state, val) {
@@ -36,6 +40,13 @@ export default createStore({
     closePreview (state) {
       state.imgPreviewShow = false
       state.imgPreviewList = []
+    },
+    // 微信配置相关
+    setWeixinShareConfig (state, config) {
+      state.weixinConfig = config
+    },
+    setOnMiniPrograms (state, status) {
+      state.onMiniPrograms = status
     }
   },
   actions: {

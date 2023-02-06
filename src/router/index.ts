@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 import store from '../store/index'
 import Home from '../views/Home.vue'
 import familySvg from '../views/familySvg.vue'
+// import { miniProgramNavigateTo } from '../utils/Weixin.js'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -99,11 +100,25 @@ const setoRouteTransitionName = (to, from) => {
 }
 router.beforeEach((to, from, next) => {
   const token = window.sessionStorage.getItem('token')
-  if (to.name !== 'Login' && !token) {
-    next({ path: '/Login' })
+  console.log(222, to, from)
+  if (store.state.onMiniPrograms) {
+    const url = 'http://192.168.0.104:8080/#' + to.path
+    // miniProgramNavigateTo(url)
+    console.log(url, to.name)
+    if (from.name) {
+      window.uniWebview.navigateTo({
+        url: `/pages/component/web-view/web-view?url=${decodeURIComponent(url)}`
+      })
+    } else {
+      next()
+    }
+  } else {
+    // if (to.name !== 'Login' && !token) {
+    //   next({ path: '/Login' })
+    // }
+    setoRouteTransitionName(to, from)
+    next()
   }
-  setoRouteTransitionName(to, from)
-  next()
 })
 
 export default router
