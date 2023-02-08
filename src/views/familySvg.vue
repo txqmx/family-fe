@@ -7,7 +7,8 @@
     <van-button type="warning" size="small" @click="show = true">{{ fieldValue }}</van-button>
     <van-button type="warning" size="small" @click="enlarge">全部展开</van-button>
     <van-button type="warning" size="small" @click="micrify">全部收起</van-button>
-    <van-button v-if="!isRoot" type="warning" size="small" @click="goBackRoot">回到根节点</van-button>
+    <van-button v-if="!isRoot" type="warning" size="small" @click="goBackRoot">根节点</van-button>
+    <van-button type="warning" size="small" @click="search" icon="search"></van-button>
   </div>
   <search v-if="searchShow" @searchSubmit="searchSubmit"></search>
   <van-popup v-model:show="show" round position="bottom" :close-on-click-overlay="false">
@@ -74,7 +75,6 @@ export default defineComponent({
       if (this.treeData.id !== item.id) {
         this.getTreeData(item)
       }
-      this.setSearchState(false)
     },
     goBackRoot () {
       this.getTreeData()
@@ -177,6 +177,9 @@ export default defineComponent({
       this.getTreeData(selectedOptions[1])
       this.show = false
       window.history.back()
+    },
+    search () {
+      this.$store.commit('setSearchState', true)
     }
 
   },
@@ -239,11 +242,11 @@ export default defineComponent({
   display: flex;
   align-items: center;
   position: fixed;
-  right: 15px;
+  right: 10px;
   bottom: 15px;
 
   .van-button {
-    margin: 0 5px;
+    margin: 0 3px;
   }
 }
 </style>

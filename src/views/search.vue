@@ -46,6 +46,7 @@ export default defineComponent({
     window.addEventListener('popstate', this.onCancel, false)
   },
   unmounted () {
+    console.log(111)
     window.removeEventListener('popstate', this.onCancel, false)
   },
   methods: {
@@ -63,10 +64,13 @@ export default defineComponent({
       this.getList()
     },
     handleClick (item) {
-      history.back() // ??
       this.$emit('searchSubmit', item)
+      this.onCancel()
     },
-    onCancel () {
+    onCancel (e) {
+      if (!e) {
+        window.history.back()
+      }
       this.setSearchState(false)
     }
   }

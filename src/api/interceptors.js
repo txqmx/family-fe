@@ -16,7 +16,6 @@ export function resSuccess (response) {
 }
 
 export function reqSuccess (config) {
-  console.log('---')
   config.headers.family = getUrlParam('family') || localStorage.getItem('family')
   return config
 }

@@ -2,7 +2,7 @@
   <div class="img-preview-container">
     <div class="img-preview-nav">
         <div class="img-back" @click="back">
-            <van-icon name="arrow-left" />
+          <van-icon name="cross" />
         </div>
 
     </div>

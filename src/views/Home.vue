@@ -33,7 +33,7 @@ export default defineComponent({
   },
   created () {
     const familyCode = getUrlParam('family')
-    window.localStorage.setItem('faimly', familyCode)
+    window.localStorage.setItem('family', familyCode)
     this.getPageDetail()
   },
 
