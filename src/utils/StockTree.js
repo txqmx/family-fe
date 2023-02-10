@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import * as d3 from 'd3'
+import { imgUrlParser } from '@/utils/Parser'
 export class StockTree {
   constructor (options) {
     // 树的源数据
@@ -372,9 +373,9 @@ export class StockTree {
     p1.append('image')
       .attr('xlink:href', (d) => {
         if (isMeta) {
-          return d.data.mateInfo.avatarUrl || require('@/assets/111.jpeg')
+          return imgUrlParser(d.data.mateInfo.avatar) || require('@/assets/222.jpeg')
         }
-        return d.data.avatarUrl || require('@/assets/111.jpeg')
+        return imgUrlParser(d.data.avatar) || require('@/assets/111.jpeg')
       })
       .attr('preserveAspectRatio', 'none')
       .attr('width', this.config.avatarWidth)

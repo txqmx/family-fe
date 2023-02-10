@@ -33,6 +33,8 @@ export const axiosCus = {
 export default {
   axios: (dataSource) => axiosCus[dataSource.method](`${baseUrl}${dataSource.url}`, dataSource.data),
   login: (data) => axiosCus.post(`${baseUrl}/api/user/login`, data),
+
+  getGenealogy: (data) => axiosCus.get(`${baseUrl}/api/genealogy/query`, data),
   getMemberList: (data) => axiosCus.get(`${baseUrl}/api/member/queryList`, data),
   queryMaxLevel: (data) => axiosCus.get(`${baseUrl}/api/member/queryMaxLevel`, data),
   getMemberTree: (data) => axiosCus.get(`${baseUrl}/api/member/queryTree`, data),

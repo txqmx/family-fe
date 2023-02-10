@@ -41,10 +41,10 @@ export default defineComponent({
     ...mapMutations(['setLoading']),
     async getPageDetail () {
       this.$setLoading(true)
-      const data = await api.getPageDetail({
-        id: 1
+      const data = await api.getGenealogy({
+        code: getUrlParam('family')
       })
-      const homeConfig = data.detail
+      const homeConfig = data.pageInfo.detail
       // 暂时兼容
       // for (let i = 0; i < homeConfig.length; i++) {
       //   for (const j in homeConfig[i].data) {
