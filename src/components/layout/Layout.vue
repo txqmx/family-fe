@@ -1,6 +1,6 @@
 <template>
   <div class="layout-cantainer">
-    <van-nav-bar
+    <!-- <van-nav-bar
       v-show="!hideBar"
       class="vav-bar"
       title="宗信堂"
@@ -15,7 +15,7 @@
           @click="search"
         />
       </template>
-    </van-nav-bar>
+    </van-nav-bar> -->
     <div :class="['layout-content',hideBar?'hide-bar':'']">
       <slot></slot>
     </div>
@@ -61,7 +61,8 @@ export default defineComponent({
   }
   .layout-content {
     position: relative;
-    height: calc(100% - 47px);
+    // height: calc(100% - 47px);
+    height: 100%;
     overflow: hidden;
   }
   .hide-bar{

@@ -1,16 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import axios from 'axios'
-import { resSuccess, resError } from './interceptors'
+import { resSuccess, reqSuccess, resError } from './interceptors'
 
 // import userTree from './userTree.json'
-const baseUrl = 'http://huanglf.zongxintang.com'
-// const baseUrl = 'http://localhost:7001'
+// const baseUrl = 'http://huanglf.zongxintang.com'
+const baseUrl = 'http://192.168.0.104:7002'
 
 const request = axios.create({
   timeout: 1000 * 30 // 超时设置
 })
+
+// 请求拦截
+request.interceptors.request.use(reqSuccess, error => {
+  // Do something with request error
+  console.log(error) // for debug
+  Promise.reject(error)
+})
+
+// 响应拦截
 request.interceptors.response.use(resSuccess, resError)
+
 export const axiosCus = {
   get: (path, data, options) => {
     return request.get(path, Object.assign({}, { params: data }, options))
@@ -23,6 +33,8 @@ export const axiosCus = {
 export default {
   axios: (dataSource) => axiosCus[dataSource.method](`${baseUrl}${dataSource.url}`, dataSource.data),
   login: (data) => axiosCus.post(`${baseUrl}/api/user/login`, data),
+
+  getGenealogy: (data) => axiosCus.get(`${baseUrl}/api/genealogy/query`, data),
   getMemberList: (data) => axiosCus.get(`${baseUrl}/api/member/queryList`, data),
   queryMaxLevel: (data) => axiosCus.get(`${baseUrl}/api/member/queryMaxLevel`, data),
   getMemberTree: (data) => axiosCus.get(`${baseUrl}/api/member/queryTree`, data),

@@ -25,7 +25,7 @@ import { defineComponent } from 'vue'
 import { mapMutations } from 'vuex'
 import { Swiper, SwiperSlide } from 'swiper/vue/swiper-vue'
 import { Autoplay, Pagination, Navigation } from 'swiper'
-import { lvDataParser } from '@/utils/Parser'
+import { lvDataParser, imgUrlParser } from '@/utils/Parser'
 import api from '@/api'
 import 'swiper/swiper-bundle.min.css'
 export default defineComponent({
@@ -61,7 +61,7 @@ export default defineComponent({
               ? require('@/assets/111.jpeg')
               : require('@/assets/222.jpeg')
       } else {
-        avatar = item.avatarUrl
+        avatar = imgUrlParser(item.avatar)
       }
       return avatar
     },

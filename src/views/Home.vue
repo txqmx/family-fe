@@ -9,6 +9,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import api from '@/api'
+import { getUrlParam } from '@/utils/Url'
 import LvImgSwiper from '@/components/packages/LvImgSwiper.vue'
 import LvTextView from '@/components/packages/LvTextView.vue'
 import { mapMutations } from 'vuex'
@@ -31,6 +32,8 @@ export default defineComponent({
     }
   },
   created () {
+    const familyCode = getUrlParam('family')
+    window.localStorage.setItem('family', familyCode)
     this.getPageDetail()
   },
 
@@ -38,10 +41,10 @@ export default defineComponent({
     ...mapMutations(['setLoading']),
     async getPageDetail () {
       this.$setLoading(true)
-      const data = await api.getPageDetail({
-        id: 1
+      const data = await api.getGenealogy({
+        code: getUrlParam('family')
       })
-      const homeConfig = data.detail
+      const homeConfig = data.pageInfo.detail
       // 暂时兼容
       // for (let i = 0; i < homeConfig.length; i++) {
       //   for (const j in homeConfig[i].data) {

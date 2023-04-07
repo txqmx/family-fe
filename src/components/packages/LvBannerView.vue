@@ -11,7 +11,7 @@
       <div class="family-address">地址：{{ dataInfo.address }}</div>
       <div class="family-info">
         <span class="info-title">简介：</span>
-        <span>{{ dataInfo.info }}</span>
+        <span class="info-content">{{ dataInfo.info }}</span>
       </div>
     </div>
     <!-- <div class="lv-banner-btn">
@@ -100,7 +100,10 @@ export default defineComponent({
       display: flex;
       .info-title {
         display: inline-block;
-        // width: 45px;
+        // width: 46px;
+      }
+      .info-content{
+        flex: 1;
       }
     }
   }

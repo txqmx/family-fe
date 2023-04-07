@@ -60,7 +60,7 @@ export default defineComponent({
 
 <style lang="less" scoped>
 .article-list {
-  height: calc(100% - 51px);
+  height: 100%;
   overflow: auto;
   padding: 10px 15px;
   .article-item {
